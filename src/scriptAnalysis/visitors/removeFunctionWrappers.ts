@@ -1,9 +1,12 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import {
+  ArrowFunctionExpression,
   BinaryExpression,
   callExpression,
   cloneDeepWithoutLoc,
   Expression,
+  FunctionDeclaration,
+  FunctionExpression,
   Identifier,
   identifier,
   isBinaryExpression,
@@ -19,16 +22,33 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
     if (path.parentPath && path.parentPath.isFunctionParent()) return;
 
     for (const binding of Object.values(path.scope.bindings)) {
+      const bindingStatement = binding.path.getStatementParent();
       if (
-        (binding.kind as BindingKind) !== 'hoisted' ||
-        !binding.path.isFunctionDeclaration() ||
-        binding.path.parentPath.isProgram()
+        (binding.kind as BindingKind) === 'param' ||
+        !bindingStatement ||
+        bindingStatement.parentPath.isProgram()
       )
         continue;
 
-      const bindingBody = binding.path.get('body');
-      if (!bindingBody.isBlockStatement()) continue;
-      const [bodyStatement] = bindingBody.get('body');
+      let functionPath: NodePath<
+        FunctionDeclaration | FunctionExpression | ArrowFunctionExpression
+      >;
+
+      if (bindingStatement.isVariableDeclaration()) {
+        const [declarator] = bindingStatement.get('declarations');
+        const init = declarator.get('init');
+        if (!init.isFunctionExpression() && !init.isArrowFunctionExpression())
+          return;
+        functionPath = init;
+      } else if (bindingStatement.isFunctionDeclaration()) {
+        functionPath = bindingStatement;
+      } else {
+        return;
+      }
+
+      const functionBody = functionPath.get('body');
+      if (!functionBody.isBlockStatement()) continue;
+      const [bodyStatement] = functionBody.get('body');
       if (!bodyStatement.isReturnStatement()) continue;
       const returnArgument = bodyStatement.get('argument');
       if (!returnArgument.isCallExpression()) continue;
@@ -46,7 +66,7 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
         node: BinaryExpression | Identifier;
       }[] = [];
 
-      for (const paramBinding of Object.values(binding.path.scope.bindings)) {
+      for (const paramBinding of Object.values(functionPath.scope.bindings)) {
         if (
           (paramBinding.kind as BindingKind) !== 'param' ||
           !paramBinding.constant
@@ -76,6 +96,8 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
           });
         }
       }
+
+      console.log(referencedParams.length);
       for (const reference of binding.referencePaths) {
         if (!reference.parentPath?.isCallExpression()) continue;
         const args = reference.parentPath.get('arguments');
@@ -83,7 +105,7 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
         for (const param of referencedParams) {
           const argument = args[param.index];
 
-          if (!isExpression(argument.node)) continue;
+          if (!argument || !isExpression(argument.node)) continue;
 
           if (isBinaryExpression(param.node)) {
             const paramClone = recreateBinaryExpression(
@@ -107,8 +129,8 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
         reference.parentPath.replaceWith(originalCall);
         reference.parentPath.scope.crawl();
       }
-      binding.path.remove();
-      binding.scope.crawl();
+      functionPath.scope.crawl();
+      bindingStatement.remove();
     }
   },
 };

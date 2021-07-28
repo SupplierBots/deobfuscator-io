@@ -1,10 +1,14 @@
 import { NodePath } from '@babel/traverse';
-import { FunctionDeclaration, Identifier } from '@babel/types';
+import {
+  FunctionDeclaration,
+  Identifier,
+  VariableDeclaration,
+} from '@babel/types';
 import { ArrayEncryption } from './ArrayEncryption';
 
 export interface StringArrayFunction {
   encryption: ArrayEncryption;
-  path: NodePath<FunctionDeclaration>;
+  declaration: NodePath<FunctionDeclaration | VariableDeclaration>;
   identifier: NodePath<Identifier>;
   offset: number;
 }

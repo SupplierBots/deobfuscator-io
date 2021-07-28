@@ -1,5 +1,5 @@
 import { NodePath, Visitor } from '@babel/traverse';
-import { isNodesEquivalent, MemberExpression } from '@babel/types';
+import { Identifier, isNodesEquivalent, MemberExpression } from '@babel/types';
 import { getPrevSibling } from '../../common/babelExtensions';
 import { AnalysisResult } from '../types/AnalysisResult';
 import { ArrayEncryption } from '../types/ArrayEncryption';
@@ -14,13 +14,24 @@ export const FIND_ARRAY_FUNCTIONS: Visitor<AnalysisResult> = {
       return;
     }
 
-    const functionDeclaration = path.findParent((p) =>
-      p.isFunctionDeclaration(),
-    );
+    const declaration = path.getFunctionParent()?.getStatementParent();
 
-    if (!functionDeclaration?.isFunctionDeclaration()) return;
-    const id = functionDeclaration.get('id');
-    if (!id.isIdentifier()) return;
+    if (!declaration) return;
+
+    let id: NodePath<Identifier>;
+
+    if (declaration.isFunctionDeclaration()) {
+      const declarationId = declaration.get('id');
+      if (!declarationId.isIdentifier()) return;
+      id = declarationId;
+    } else if (declaration.isVariableDeclaration()) {
+      const [declarator] = declaration.get('declarations');
+      const declaratorId = declarator.get('id');
+      if (!declaratorId.isIdentifier()) return;
+      id = declaratorId;
+    } else {
+      return;
+    }
 
     const statement = object.getStatementParent();
     if (!statement) return;
@@ -42,7 +53,7 @@ export const FIND_ARRAY_FUNCTIONS: Visitor<AnalysisResult> = {
       name: 'none',
     };
 
-    functionDeclaration.traverse(
+    declaration.traverse(
       {
         StringLiteral(path, encryption) {
           const value = path.node.value;
@@ -68,8 +79,8 @@ export const FIND_ARRAY_FUNCTIONS: Visitor<AnalysisResult> = {
 
     state.arrayFunctions.push({
       offset,
+      declaration,
       identifier: id,
-      path: functionDeclaration,
       encryption: encryption.name,
     });
   },

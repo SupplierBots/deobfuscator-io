@@ -5,7 +5,7 @@ import { EVALUATE_NUMERIC_EXPRESSIONS } from './visitors/evaluteNumericExpressio
 import { FIND_ARRAY_FUNCTIONS } from './visitors/findArrayFunctions';
 import { FIND_STRING_ARRAY } from './visitors/findStringArray';
 import { REMOVE_FUNCTION_WRAPPERS } from './visitors/removeFunctionWrappers';
-// import { REMOVE_VARIABLE_WRAPPERS } from './visitors/removeVariableWrappers';
+import { REMOVE_VARIABLE_WRAPPERS } from './visitors/removeVariableWrappers';
 
 export const analyseScript = (ast: File) => {
   const analysisState: AnalysisResult = {
@@ -17,9 +17,14 @@ export const analyseScript = (ast: File) => {
     EVALUATE_NUMERIC_EXPRESSIONS,
     FIND_STRING_ARRAY,
     FIND_ARRAY_FUNCTIONS,
-    // REMOVE_VARIABLE_WRAPPERS,
+    REMOVE_VARIABLE_WRAPPERS,
     REMOVE_FUNCTION_WRAPPERS,
     EVALUATE_NUMERIC_EXPRESSIONS,
   );
+  analysisState.arrayFunctions.forEach((f) => {
+    console.log(f.identifier.toString());
+    console.log(f.encryption);
+    console.log(f.offset);
+  });
   return utils.regenerate(ast);
 };
