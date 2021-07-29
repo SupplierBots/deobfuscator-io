@@ -5,6 +5,7 @@ function hi() {
     (() => {
       const trapper = 2137 + 3;
       console.log(trapper);
+      console.log('siema byku');
     })();
   }
   xd();

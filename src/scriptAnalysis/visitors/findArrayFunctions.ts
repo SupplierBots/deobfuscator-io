@@ -14,7 +14,13 @@ export const FIND_ARRAY_FUNCTIONS: Visitor<AnalysisResult> = {
       return;
     }
 
-    const declaration = path.getFunctionParent()?.getStatementParent();
+    const declaration = path
+      .find(
+        (p) =>
+          p.isFunction() &&
+          (p.getStatementParent()?.parentPath?.isProgram() ?? false),
+      )
+      ?.getStatementParent();
 
     if (!declaration) return;
 
@@ -76,12 +82,11 @@ export const FIND_ARRAY_FUNCTIONS: Visitor<AnalysisResult> = {
       encryption,
     );
     const offset = parseInt(binaryRight.toString());
-
-    state.arrayFunctions.push({
+    state.arrayFunctions[id.node.name] = {
       offset,
       declaration,
       identifier: id,
       encryption: encryption.name,
-    });
+    };
   },
 };

@@ -38,12 +38,12 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
         const [declarator] = bindingStatement.get('declarations');
         const init = declarator.get('init');
         if (!init.isFunctionExpression() && !init.isArrowFunctionExpression())
-          return;
+          continue;
         functionPath = init;
       } else if (bindingStatement.isFunctionDeclaration()) {
         functionPath = bindingStatement;
       } else {
-        return;
+        continue;
       }
 
       const functionBody = functionPath.get('body');
@@ -55,10 +55,10 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
       const callee = returnArgument.get('callee');
       if (!callee.isIdentifier()) continue;
 
-      const originalFunction = state.arrayFunctions.find(
-        (f) => f.identifier.node.name === callee.node.name,
+      const originalFunctionName = Object.keys(state.arrayFunctions).find(
+        (f) => f === callee.node.name,
       );
-      if (!originalFunction) continue;
+      if (!originalFunctionName) continue;
 
       const referencedParams: {
         index: number;
@@ -97,7 +97,6 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
         }
       }
 
-      console.log(referencedParams.length);
       for (const reference of binding.referencePaths) {
         if (!reference.parentPath?.isCallExpression()) continue;
         const args = reference.parentPath.get('arguments');
@@ -123,7 +122,7 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
         }
 
         const originalCall = callExpression(
-          identifier(originalFunction.identifier.node.name),
+          identifier(originalFunctionName),
           clonedArgs,
         );
         reference.parentPath.replaceWith(originalCall);
