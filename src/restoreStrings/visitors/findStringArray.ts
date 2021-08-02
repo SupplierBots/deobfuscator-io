@@ -1,11 +1,11 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { ArrayExpression } from '@babel/types';
-import { AnalysisResult } from '../types/AnalysisResult';
+import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
-export const FIND_STRING_ARRAY: Visitor<AnalysisResult> = {
+export const FIND_STRING_ARRAY: Visitor<ObfuscatedStringsState> = {
   ArrayExpression: function (
     path: NodePath<ArrayExpression>,
-    state: AnalysisResult,
+    state: ObfuscatedStringsState,
   ) {
     const container = path.getStatementParent()?.parentPath;
 

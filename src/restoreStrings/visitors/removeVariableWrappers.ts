@@ -1,12 +1,13 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { Scopable } from '@babel/types';
-import { AnalysisResult } from '../types/AnalysisResult';
+import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';
 
-export const REMOVE_VARIABLE_WRAPPERS: Visitor<AnalysisResult> = {
-  Scopable: function (path: NodePath<Scopable>, state: AnalysisResult) {
-    if (path.parentPath?.isFunctionParent()) return;
+export const REMOVE_VARIABLE_WRAPPERS: Visitor<ObfuscatedStringsState> = {
+  Scopable: function (path: NodePath<Scopable>, state: ObfuscatedStringsState) {
+    const parent = path.parentPath;
+    if (parent && parent.isFunctionParent()) return;
 
     for (const [name, binding] of Object.entries(path.scope.bindings)) {
       if (
@@ -15,13 +16,13 @@ export const REMOVE_VARIABLE_WRAPPERS: Visitor<AnalysisResult> = {
       )
         continue;
       const bindingPath = binding.path;
-      if (!bindingPath.isVariableDeclarator()) return;
+      if (!bindingPath.isVariableDeclarator()) continue;
       const init = bindingPath.get('init');
-      if (!init.isIdentifier()) return;
+      if (!init.isIdentifier()) continue;
       const arrayFunctionName = Object.keys(state.arrayFunctions).find(
         (f) => f === init.node.name,
       );
-      if (!arrayFunctionName) return;
+      if (!arrayFunctionName) continue;
       path.scope.rename(name, arrayFunctionName);
       bindingPath.remove();
       binding.scope.crawl();

@@ -1,4 +1,4 @@
-import { StringArrayFunction } from './types/StringArrayFunction';
+import { StringArrayFunction } from './StringArrayFunction';
 
 type RC4Decoder = (index: number, key: string) => string;
 type Base64Decoder = (index: number) => string;

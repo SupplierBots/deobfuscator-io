@@ -1,13 +1,13 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { Identifier, isNodesEquivalent, MemberExpression } from '@babel/types';
 import { getPrevSibling } from '../../common/babelExtensions';
-import { AnalysisResult } from '../types/AnalysisResult';
+import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { ArrayEncryption } from '../types/ArrayEncryption';
 
-export const FIND_ARRAY_FUNCTIONS: Visitor<AnalysisResult> = {
+export const FIND_ARRAY_FUNCTIONS: Visitor<ObfuscatedStringsState> = {
   MemberExpression: function (
     path: NodePath<MemberExpression>,
-    state: AnalysisResult,
+    state: ObfuscatedStringsState,
   ) {
     const object = path.get('object');
     if (!isNodesEquivalent(object.node, state.stringArrayIdentifier?.node)) {

@@ -1,132 +1,137 @@
-const w = [
-    'u8kzWP3cJ8oUW4GFWQ15cq==',
-    'Bg9N',
-    'q1iE',
+const W = [
+    'log',
+    'ohlcIa==',
+    'ASocpSoeB8ojeY9KFq3cLG==',
+    'C2LLBweGzw5PDq==',
+    'DWKz',
+    'rCoisa==',
     'C2LLBweGyNLRDq==',
-    'sgvSBg8Gv29YBgqH',
-    'WPaXW5e='
+    'qsb0BYbQzxn0ihbPzxj3C3P5ignHBgWGDYbqB2XZy2u='
 ];
-(function (r, x) {
-    const Z = function (n) {
-        while (--n) {
-            r['push'](r['shift']());
+(function (e, p) {
+    const d = function (E) {
+        while (--E) {
+            e['push'](e['shift']());
         }
     };
-    Z(++x);
-}(w, 0x1a1));
-const r = function (x, Z) {
-    x = x - 0x0;
-    let n = w[x];
-    if (r['UxECyu'] === undefined) {
-        var L = function (c) {
-            const G = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';
-            const D = String(c)['replace'](/=+$/, '');
-            let H = '';
-            for (let B = 0x0, A, N, h = 0x0; N = D['charAt'](h++); ~N && (A = B % 0x4 ? A * 0x40 + N : N, B++ % 0x4) ? H += String['fromCharCode'](0xff & A >> (-0x2 * B & 0x6)) : 0x0) {
-                N = G['indexOf'](N);
+    d(++p);
+}(W, 0x1b8));
+const e = function (p, d) {
+    p = p - 0x0;
+    let E = W[p];
+    if (e['ubiCFy'] === undefined) {
+        var k = function (i) {
+            const B = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';
+            const g = String(i)['replace'](/=+$/, '');
+            let u = '';
+            for (let m = 0x0, R, w, C = 0x0; w = g['charAt'](C++); ~w && (R = m % 0x4 ? R * 0x40 + w : w, m++ % 0x4) ? u += String['fromCharCode'](0xff & R >> (-0x2 * m & 0x6)) : 0x0) {
+                w = B['indexOf'](w);
             }
-            return H;
+            return u;
         };
-        r['xQnPZW'] = function (c) {
-            const G = L(c);
-            let D = [];
-            for (let H = 0x0, B = G['length']; H < B; H++) {
-                D += '%' + ('00' + G['charCodeAt'](H)['toString'](0x10))['slice'](-0x2);
+        e['sbBHgs'] = function (B) {
+            const g = k(B);
+            let u = [];
+            for (let m = 0x0, R = g['length']; m < R; m++) {
+                u += '%' + ('00' + g['charCodeAt'](m)['toString'](0x10))['slice'](-0x2);
             }
-            return decodeURIComponent(D);
+            return decodeURIComponent(u);
         };
-        r['kKhpUL'] = {};
-        r['UxECyu'] = !![];
+        e['pdNecs'] = {};
+        e['ubiCFy'] = !![];
     }
-    const g = r['kKhpUL'][x];
-    if (g === undefined) {
-        n = r['xQnPZW'](n);
-        r['kKhpUL'][x] = n;
+    const t = e['pdNecs'][p];
+    if (t === undefined) {
+        E = e['sbBHgs'](E);
+        e['pdNecs'][p] = E;
     } else {
-        n = g;
+        E = t;
     }
-    return n;
+    return E;
 };
-const x = function (r, Z) {
-    r = r - 0x0;
-    let n = w[r];
-    if (x['oxeyRr'] === undefined) {
-        var L = function (G) {
-            const D = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';
-            const H = String(G)['replace'](/=+$/, '');
-            let B = '';
-            for (let A = 0x0, N, h, E = 0x0; h = H['charAt'](E++); ~h && (N = A % 0x4 ? N * 0x40 + h : h, A++ % 0x4) ? B += String['fromCharCode'](0xff & N >> (-0x2 * A & 0x6)) : 0x0) {
-                h = D['indexOf'](h);
+const p = function (e, d) {
+    e = e - 0x0;
+    let E = W[e];
+    if (p['PdWSes'] === undefined) {
+        var k = function (B) {
+            const g = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';
+            const u = String(B)['replace'](/=+$/, '');
+            let m = '';
+            for (let R = 0x0, w, C, X = 0x0; C = u['charAt'](X++); ~C && (w = R % 0x4 ? w * 0x40 + C : C, R++ % 0x4) ? m += String['fromCharCode'](0xff & w >> (-0x2 * R & 0x6)) : 0x0) {
+                C = g['indexOf'](C);
             }
-            return B;
+            return m;
         };
-        const c = function (G, D) {
-            let H = [], B = 0x0, A, N = '', h = '';
-            G = L(G);
-            for (let q = 0x0, R = G['length']; q < R; q++) {
-                h += '%' + ('00' + G['charCodeAt'](q)['toString'](0x10))['slice'](-0x2);
+        const i = function (B, g) {
+            let u = [], m = 0x0, R, w = '', C = '';
+            B = k(B);
+            for (let N = 0x0, P = B['length']; N < P; N++) {
+                C += '%' + ('00' + B['charCodeAt'](N)['toString'](0x10))['slice'](-0x2);
             }
-            G = decodeURIComponent(h);
-            let E;
-            for (E = 0x0; E < 0x100; E++) {
-                H[E] = E;
+            B = decodeURIComponent(C);
+            let X;
+            for (X = 0x0; X < 0x100; X++) {
+                u[X] = X;
             }
-            for (E = 0x0; E < 0x100; E++) {
-                B = (B + H[E] + D['charCodeAt'](E % D['length'])) % 0x100;
-                A = H[E];
-                H[E] = H[B];
-                H[B] = A;
+            for (X = 0x0; X < 0x100; X++) {
+                m = (m + u[X] + g['charCodeAt'](X % g['length'])) % 0x100;
+                R = u[X];
+                u[X] = u[m];
+                u[m] = R;
             }
-            E = 0x0;
-            B = 0x0;
-            for (let I = 0x0; I < G['length']; I++) {
-                E = (E + 0x1) % 0x100;
-                B = (B + H[E]) % 0x100;
-                A = H[E];
-                H[E] = H[B];
-                H[B] = A;
-                N += String['fromCharCode'](G['charCodeAt'](I) ^ H[(H[E] + H[B]) % 0x100]);
+            X = 0x0;
+            m = 0x0;
+            for (let G = 0x0; G < B['length']; G++) {
+                X = (X + 0x1) % 0x100;
+                m = (m + u[X]) % 0x100;
+                R = u[X];
+                u[X] = u[m];
+                u[m] = R;
+                w += String['fromCharCode'](B['charCodeAt'](G) ^ u[(u[X] + u[m]) % 0x100]);
             }
-            return N;
+            return w;
         };
-        x['HoshMb'] = c;
-        x['SNYYwR'] = {};
-        x['oxeyRr'] = !![];
+        p['ViljWL'] = i;
+        p['rWykmU'] = {};
+        p['PdWSes'] = !![];
     }
-    const g = x['SNYYwR'][r];
-    if (g === undefined) {
-        if (x['MeMRkc'] === undefined) {
-            x['MeMRkc'] = !![];
+    const t = p['rWykmU'][e];
+    if (t === undefined) {
+        if (p['vaBTiL'] === undefined) {
+            p['vaBTiL'] = !![];
         }
-        n = x['HoshMb'](n, Z);
-        x['SNYYwR'][r] = n;
+        E = p['ViljWL'](E, d);
+        p['rWykmU'][e] = E;
     } else {
-        n = g;
+        E = t;
     }
-    return n;
+    return E;
 };
-const Z = function (r, x) {
-    r = r - 0x0;
-    let n = w[r];
-    return n;
+const d = function (e, p) {
+    e = e - 0x0;
+    let E = W[e];
+    return E;
 };
+const C = e;
+const w = p;
 function hi() {
-    const c = r;
-    const g = x;
-    console[g('0x5', 'jOZD')](c('0x1'));
-    function n() {
-        const G = g;
-        const D = g;
-        console[G('0x2', 'E^f1')](G('0x3', 'rv4B'));
+    const t = p;
+    const i = p;
+    console[t('0x4', 'K[sC')](i('0x2', 'R@Ow'));
+    function E() {
+        const g = e;
+        const B = d;
+        console[B('0x0')](g('0x3'));
         (() => {
-            const H = r;
-            const B = r;
-            const A = r;
-            const L = 0x859 + 0x3;
-            console[H('0x4')](L);
-            console[B('0x4')](A('0x0'));
+            const R = g;
+            const m = B;
+            const u = p;
+            const k = 0x859 + 0x3;
+            console[u('0x5', 'dC0q')](k);
+            console[m('0x0')](R('0x6'));
         })();
     }
-    n();
+    E();
 }
+console[w('0x1', 'dvPb')](C('0x7'));
 hi();

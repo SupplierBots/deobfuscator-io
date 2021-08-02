@@ -1,9 +1,12 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { CallExpression, stringLiteral } from '@babel/types';
-import { AnalysisResult } from '../types/AnalysisResult';
+import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
-export const REPLACE_CALL_EXPRESSIONS: Visitor<AnalysisResult> = {
-  CallExpression(path: NodePath<CallExpression>, state: AnalysisResult) {
+export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
+  CallExpression(
+    path: NodePath<CallExpression>,
+    state: ObfuscatedStringsState,
+  ) {
     const callee = path.get('callee');
     if (
       !callee.isIdentifier() ||

@@ -1,22 +1,22 @@
 import { GlobalState } from './common/types/GlobalState';
 import { utils } from './common/utils';
-import { analyseScript } from './scriptAnalysis/analyseScript';
+import { restoreStrings } from './restoreStrings';
 
 (async () => {
   const start = Date.now();
-  const [targetFilename] = process.argv.slice(2);
+  const [sourceFilename] = process.argv.slice(2);
 
-  const globalState: GlobalState = {};
+  const globalState: GlobalState = { placeholder: sourceFilename };
 
-  const sourceAST = await utils.astFromFile(`fixtures/${targetFilename}.js`);
+  const sourceAST = await utils.astFromFile(`fixtures/${sourceFilename}.js`);
 
   const deofbuscatedAST = utils.run(
     sourceAST,
     globalState,
     //* Steps *
-    analyseScript,
+    restoreStrings,
   );
 
-  await utils.generateOutput(deofbuscatedAST, targetFilename);
+  await utils.generateOutput(deofbuscatedAST, sourceFilename);
   console.log(`Finished in ${Date.now() - start}ms`);
 })();

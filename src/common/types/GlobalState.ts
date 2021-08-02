@@ -1,1 +1,3 @@
-export interface GlobalState {}
+export interface GlobalState {
+  placeholder: string;
+}

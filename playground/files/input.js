@@ -10,4 +10,6 @@ function hi() {
   }
   xd();
 }
+
+console.log('A to jest pierwszy call w Polsce');
 hi();

@@ -8,7 +8,7 @@ import {
   stringLiteral,
   UnaryExpression,
 } from '@babel/types';
-import { AnalysisResult } from '../types/AnalysisResult';
+import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
 function handler(path: NodePath<BinaryExpression | UnaryExpression>) {
   const source = path.toString();
@@ -25,11 +25,11 @@ function handler(path: NodePath<BinaryExpression | UnaryExpression>) {
       path.replaceWith(stringLiteral(value));
     }
   } catch (ex) {
-    //Couldn't eval expression. It shouldn't be replaced.
+    //* Couldn't eval expression, so it shouldn't be replaced.
   }
 }
 
-export const EVALUATE_NUMERIC_EXPRESSIONS: Visitor<AnalysisResult> = {
+export const EVALUATE_NUMERIC_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
   BinaryExpression: function (path: NodePath<BinaryExpression>) {
     if (isUnaryExpression(path.node.left, { operator: 'typeof' })) return;
     if (isMemberExpression(path.node.left)) return;

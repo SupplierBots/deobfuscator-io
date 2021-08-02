@@ -1,13 +1,6 @@
 import fs from 'fs';
 import * as parser from '@babel/parser';
-import {
-  File,
-  isBooleanLiteral,
-  isNullLiteral,
-  isNumericLiteral,
-  isStringLiteral,
-  Node,
-} from '@babel/types';
+import { File, Node } from '@babel/types';
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse';
 import generate from '@babel/generator';
 import { DeobfuscatorStep } from './types/DeobfuscatorStep';
@@ -51,28 +44,6 @@ export const utils = {
       await fs.promises.mkdir(outDir);
     }
     await fs.promises.writeFile(`${outDir}/${outputFilename}.js`, code);
-  },
-  isPrimitiveLiteral: (node: Node) => {
-    return (
-      isStringLiteral(node) ||
-      isNumericLiteral(node) ||
-      isBooleanLiteral(node) ||
-      isNullLiteral(node)
-    );
-  },
-  isStringOrNumericLiteral: (node: Node) => {
-    return isStringLiteral(node) || isNumericLiteral(node);
-  },
-  isPathPrimitiveLiteral: (path: NodePath) => {
-    return (
-      path.isStringLiteral() ||
-      path.isNumericLiteral() ||
-      path.isBooleanLiteral() ||
-      path.isNullLiteral()
-    );
-  },
-  isPathStringOrNumericLiteral: (path: NodePath) => {
-    return path.isStringLiteral() || path.isNumericLiteral();
   },
   regenerate: (ast: File) => {
     return parser.parse(generate(ast).code);

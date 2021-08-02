@@ -13,13 +13,14 @@ import {
   isExpression,
   Scopable,
 } from '@babel/types';
-import { AnalysisResult } from '../types/AnalysisResult';
+import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';
 
-export const REMOVE_FUNCTION_WRAPPERS: Visitor<AnalysisResult> = {
-  Scopable(path: NodePath<Scopable>, state: AnalysisResult) {
-    if (path.parentPath && path.parentPath.isFunctionParent()) return;
+export const REMOVE_FUNCTION_WRAPPERS: Visitor<ObfuscatedStringsState> = {
+  Scopable(path: NodePath<Scopable>, state: ObfuscatedStringsState) {
+    const parent = path.parentPath;
+    if (parent && parent.isFunctionParent()) return;
 
     for (const binding of Object.values(path.scope.bindings)) {
       const bindingStatement = binding.path.getStatementParent();

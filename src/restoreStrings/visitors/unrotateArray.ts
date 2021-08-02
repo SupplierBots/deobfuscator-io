@@ -1,12 +1,12 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { CallExpression, cloneDeepWithoutLoc } from '@babel/types';
-import { AnalysisResult } from '../types/AnalysisResult';
+import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { REPLACE_CALL_EXPRESSIONS } from './replaceCallExpressions';
 
-export const UNROTATE_ARRAY: Visitor<AnalysisResult> = {
+export const UNROTATE_ARRAY: Visitor<ObfuscatedStringsState> = {
   CallExpression: function (
     path: NodePath<CallExpression>,
-    state: AnalysisResult,
+    state: ObfuscatedStringsState,
   ) {
     if (!state.stringArrayValues || !state.stringArrayIdentifier) return;
     const callee = path.get('callee');
