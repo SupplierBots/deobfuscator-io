@@ -37,7 +37,7 @@ import JavascriptObfuscator from 'javascript-obfuscator';
     splitStringsChunkLength: 10,
     simplify: false,
     selfDefending: false,
-    transformObjectKeys: false,
+    transformObjectKeys: true,
     unicodeEscapeSequence: false,
     target: 'browser',
     seed: 2137,

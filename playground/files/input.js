@@ -13,3 +13,11 @@ function hi() {
 
 console.log('A to jest pierwszy call w Polsce');
 hi();
+
+const trapper = {
+  swag: 100,
+  mordo: 'weź',
+  policja: 990 + 7,
+  ['jago dzianki']: 'no  no',
+};
+console.log(trapper);

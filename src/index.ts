@@ -1,5 +1,6 @@
 import { GlobalState } from './common/types/GlobalState';
 import { utils } from './common/utils';
+import { removeControlFlowFlattening } from './removeControlFlowFlattening';
 import { restoreStrings } from './restoreStrings';
 
 (async () => {
@@ -15,6 +16,7 @@ import { restoreStrings } from './restoreStrings';
     globalState,
     //* Steps *
     restoreStrings,
+    removeControlFlowFlattening,
   );
 
   await utils.generateOutput(deofbuscatedAST, sourceFilename);
