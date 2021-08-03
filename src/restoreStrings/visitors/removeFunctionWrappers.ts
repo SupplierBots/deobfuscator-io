@@ -24,11 +24,7 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<ObfuscatedStringsState> = {
 
     for (const binding of Object.values(path.scope.bindings)) {
       const bindingStatement = binding.path.getStatementParent();
-      if (
-        (binding.kind as BindingKind) === 'param' ||
-        !bindingStatement ||
-        bindingStatement.parentPath.isProgram()
-      )
+      if ((binding.kind as BindingKind) === 'param' || !bindingStatement)
         continue;
 
       let functionPath: NodePath<

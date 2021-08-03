@@ -29,7 +29,7 @@ function handler(path: NodePath<BinaryExpression | UnaryExpression>) {
   }
 }
 
-export const EVALUATE_NUMERIC_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
+export const SIMPLIFY_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
   BinaryExpression: function (path: NodePath<BinaryExpression>) {
     if (isUnaryExpression(path.node.left, { operator: 'typeof' })) return;
     if (isMemberExpression(path.node.left)) return;
