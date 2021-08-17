@@ -25,7 +25,6 @@ export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
 
     const [first, second] = path.get('arguments');
     if (!first.isStringLiteral() && !first.isNumericLiteral()) {
-      console.log(path.toString());
       throw new Error("Unexpected first array function's argument");
     }
 

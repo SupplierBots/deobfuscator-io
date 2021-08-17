@@ -12,6 +12,7 @@ import {
   isBinaryExpression,
   isExpression,
   Scopable,
+  VariableDeclarator,
 } from '@babel/types';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
@@ -31,14 +32,18 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<ObfuscatedStringsState> = {
         FunctionDeclaration | FunctionExpression | ArrowFunctionExpression
       >;
 
+      let wrapperDeclarator: NodePath<FunctionDeclaration | VariableDeclarator>;
+
       if (bindingStatement.isVariableDeclaration()) {
         const [declarator] = bindingStatement.get('declarations');
         const init = declarator.get('init');
         if (!init.isFunctionExpression() && !init.isArrowFunctionExpression())
           continue;
         functionPath = init;
+        wrapperDeclarator = declarator;
       } else if (bindingStatement.isFunctionDeclaration()) {
         functionPath = bindingStatement;
+        wrapperDeclarator = bindingStatement;
       } else {
         continue;
       }
@@ -46,7 +51,7 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<ObfuscatedStringsState> = {
       const functionBody = functionPath.get('body');
       if (!functionBody.isBlockStatement()) continue;
       const [bodyStatement] = functionBody.get('body');
-      if (!bodyStatement.isReturnStatement()) continue;
+      if (!bodyStatement?.isReturnStatement()) continue;
       const returnArgument = bodyStatement.get('argument');
       if (!returnArgument.isCallExpression()) continue;
       const callee = returnArgument.get('callee');
@@ -126,7 +131,7 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<ObfuscatedStringsState> = {
         reference.parentPath.scope.crawl();
       }
       functionPath.scope.crawl();
-      bindingStatement.remove();
+      wrapperDeclarator.remove();
     }
   },
 };

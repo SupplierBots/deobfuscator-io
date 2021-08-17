@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "main": "dist/index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "node -r ts-node/register --max-old-space-size=8192 src/index.ts",
     "prettier": "prettier 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",
     "playground": "ts-node playground/index.ts"
