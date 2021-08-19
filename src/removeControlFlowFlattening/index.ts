@@ -2,17 +2,15 @@ import { File } from '@babel/types';
 import { utils } from '../common/utils';
 import { RESTORE_OBJECT_EXPRESSIONS } from './visitors/restoreObjectExpressions';
 import { REMOVE_PROXY_CONTAINERS } from './visitors/removeProxyContainers';
+import { REMOVE_SWITCH_STATEMENTS } from './visitors/removeSwitchStatements';
 
 export const removeControlFlowFlattening = (ast: File) => {
-  const state = {
-    arrayFunctions: {},
-  };
   utils.runVisitors(
     ast,
-    state,
+    {}, //* Empty state
     RESTORE_OBJECT_EXPRESSIONS,
     REMOVE_PROXY_CONTAINERS,
+    REMOVE_SWITCH_STATEMENTS,
   );
-
   return ast;
 };
