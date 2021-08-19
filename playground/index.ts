@@ -8,7 +8,7 @@ import JavascriptObfuscator from 'javascript-obfuscator';
   );
   const obfuscationResult = JavascriptObfuscator.obfuscate(input, {
     compact: false,
-    controlFlowFlattening: false,
+    controlFlowFlattening: true,
     controlFlowFlatteningThreshold: 1,
     deadCodeInjection: false,
     deadCodeInjectionThreshold: 1,
@@ -37,7 +37,7 @@ import JavascriptObfuscator from 'javascript-obfuscator';
     splitStringsChunkLength: 10,
     simplify: true,
     selfDefending: false,
-    transformObjectKeys: true,
+    transformObjectKeys: false,
     unicodeEscapeSequence: false,
     target: 'browser',
     seed: 2137,

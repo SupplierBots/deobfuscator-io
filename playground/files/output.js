@@ -1,17 +1,23 @@
 const l = [
-    'Bw9Yzg8=',
-    'WOiDW7pcSq==',
-    'log',
-    'siema\x20byku',
-    'WRbkW6BcUCo9W4RdS8kOWOPDWPLSWPFcOCkMbItcGCo0WQrpW6u/WQlcH8k9W7apWOP4ESof',
-    'D2xfUG==',
-    'W5DinhG4uW==',
-    'Cg9SAwnQyq==',
-    'wrTU',
+    'qsb0BYbQzxn0ihbPzxj3C3P5ignHBgWGDYbqB2XZy2u=',
+    'WPldG8kUgWu=',
+    'EJXNWQu+',
+    'WO5YWO8=',
+    'FUBcL',
+    'C2LLBweGzw5PDq==',
+    'qKr2tha=',
+    'w1b4WQOovJNdH2zn',
     'AMfNBYbKEMLHBMTP',
-    'Hello\x20World!',
+    'yItcTW==',
+    'log',
+    'WP/cNKK=',
+    'jNHKFra=',
     'Bg9N',
-    'siema\x20eniu'
+    'Hello\x20World!',
+    'wg9sqLu=',
+    'D2xfUG==',
+    'wfftvuC=',
+    'W6rjW4BcTNlcSa=='
 ];
 (function (J, c) {
     const b = function (Q) {
@@ -24,7 +30,7 @@ const l = [
 const J = function (c, b) {
     c = c - 0x0;
     let Q = l[c];
-    if (J['bRwajc'] === undefined) {
+    if (J['dSRFRq'] === undefined) {
         var N = function (A) {
             const p = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=', K = String(A)['replace'](/=+$/, '');
             let X = '';
@@ -33,22 +39,22 @@ const J = function (c, b) {
             }
             return X;
         };
-        J['WZitBe'] = function (A) {
+        J['bWYfKR'] = function (A) {
             const p = N(A);
             let K = [];
             for (let X = 0x0, W = p['length']; X < W; X++) {
                 K += '%' + ('00' + p['charCodeAt'](X)['toString'](0x10))['slice'](-0x2);
             }
             return decodeURIComponent(K);
-        }, J['djHRqG'] = {}, J['bRwajc'] = !![];
+        }, J['KKnuEU'] = {}, J['dSRFRq'] = !![];
     }
-    const d = J['djHRqG'][c];
-    return d === undefined ? (Q = J['WZitBe'](Q), J['djHRqG'][c] = Q) : Q = d, Q;
+    const d = J['KKnuEU'][c];
+    return d === undefined ? (Q = J['bWYfKR'](Q), J['KKnuEU'][c] = Q) : Q = d, Q;
 };
 const c = function (J, b) {
     J = J - 0x0;
     let Q = l[J];
-    if (c['ZJotED'] === undefined) {
+    if (c['EmaKAh'] === undefined) {
         var N = function (p) {
             const K = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=', X = String(p)['replace'](/=+$/, '');
             let W = '';
@@ -77,57 +83,88 @@ const c = function (J, b) {
             }
             return F;
         };
-        c['wlkEak'] = A, c['AvfQAo'] = {}, c['ZJotED'] = !![];
+        c['ueCPMe'] = A, c['fYrsLO'] = {}, c['EmaKAh'] = !![];
     }
-    const d = c['AvfQAo'][J];
-    return d === undefined ? (c['LJJCst'] === undefined && (c['LJJCst'] = !![]), Q = c['wlkEak'](Q, b), c['AvfQAo'][J] = Q) : Q = d, Q;
+    const d = c['fYrsLO'][J];
+    return d === undefined ? (c['hXviTl'] === undefined && (c['hXviTl'] = !![]), Q = c['ueCPMe'](Q, b), c['fYrsLO'][J] = Q) : Q = d, Q;
 };
 const b = function (J, c) {
     J = J - 0x0;
     let Q = l[J];
     return Q;
 };
-const B = function (N, d) {
-        return c(N - '0x100', d);
-    }, Y = function (N, d) {
-        return c(N - '0x100', d);
-    }, O = function (N, d) {
-        return c(N - '0x100', d);
-    }, I = function (N, d) {
-        return J(N - '0x100', d);
-    }, u = function (N, d) {
-        return J(N - '0x100', d);
-    }, G = function (N, d) {
-        return J(N - '0x100', d);
+const L = function (Q, N) {
+        return J(Q - -'0x5', N);
+    }, q = function (Q, N) {
+        return J(Q - -'0x5', N);
+    }, t = function (Q, N) {
+        return J(Q - -'0x5', N);
+    }, g = function (Q, N) {
+        return c(Q - -'0x5', N);
+    }, Z = function (Q, N) {
+        return c(Q - -'0x5', N);
     };
 function hi() {
-    const p = function (N, d) {
-            return b(N - '0x1da', d);
-        }, A = function (N, d) {
-            return J(N - '0x1da', d);
+    const W = function (Q, N) {
+            return b(Q - '0x154', N);
+        }, X = function (Q, N) {
+            return J(Q - '0x154', N);
+        }, F = function (Q, N) {
+            return J(Q - '0x154', N);
+        }, K = function (Q, N) {
+            return c(Q - '0x154', N);
+        }, m = function (Q, N) {
+            return c(Q - '0x154', N);
+        }, x = function (Q, N) {
+            return c(Q - '0x154', N);
+        }, Q = {
+            'XQSUG': function (d, A) {
+                return d + A;
+            },
+            'FUBcL': K('0x15c', 'YYxr'),
+            'XoRBU': X('0x15a'),
+            'BDvLp': W('0x163'),
+            'EHgPw': function (d) {
+                return d();
+            }
         };
-    console[A('0x1dc')](p('0x1db'));
+    console[K('0x158', '(&DK')](Q[X('0x15b')]);
     function N() {
-        const X = function (N, d) {
-                return p(N - -'0x1c8', d);
-            }, K = function (N, d) {
-                return A(N - -'0x1c8', d);
+        const u = function (Q, N) {
+                return X(Q - -'0x101', N);
+            }, Y = function (Q, N) {
+                return K(Q - -'0x101', N);
+            }, B = function (Q, N) {
+                return W(Q - -'0x101', N);
+            }, d = {
+                'eZFWW': function (A, p) {
+                    const I = function (Q, N) {
+                        return J(Q - '0xd0', N);
+                    };
+                    return Q[I('0xe2')](A, p);
+                },
+                'OHnPk': Q[B('0x58')]
             };
-        console[K('0x14')](X('0x15')), (() => {
-            const m = function (N, d) {
-                    return X(N - '0x30d', d);
-                }, F = function (N, d) {
-                    return X(N - '0x30d', d);
-                }, W = function (N, d) {
-                    return K(N - '0x30d', d);
-                }, d = 0x859 + 0x3;
-            console[W('0x321')](d), console[m('0x325')](m('0x326'));
+        console[Y('0x5d', 'oW#g')](Q[u('0x63')]), (() => {
+            const i = function (Q, N) {
+                    return B(Q - '0x28', N);
+                }, O = function (Q, N) {
+                    return u(Q - '0x28', N);
+                }, G = function (Q, N) {
+                    return Y(Q - '0x28', N);
+                }, P = function (Q, N) {
+                    return Y(Q - '0x28', N);
+                }, A = d[G('0x88', 'edwu')](0x859, 0x3);
+            console[O('0x89')](A), console[i('0x86')](d[P('0x7e', 'RK3S')]);
         })();
     }
-    N();
+    Q[m('0x156', 'k4qJ')](N);
 }
-console[I('0x102')](B('0x108', 'RE#k')), hi();
-const Q = {};
-Q[B('0x105', 'RE#k')] = 0x64, Q[I('0x104')] = I('0x109'), Q[u('0x10b')] = 0x3de + 0x7, Q[G('0x100')] = O('0x10a', 'PAKL');
-const trapper = Q;
-console[Y('0x10c', 'RK3S')](trapper);
+console[g('0x7', '72GQ')](L(-'0x4')), hi();
+const trapper = {
+    'swag': 0x64,
+    'mordo': L('0xc'),
+    'policja': 0x3de + 0x7,
+    [q('0x4')]: Z(-'0x5', 'H75$')
+};
+console[t('0x9')](trapper);
