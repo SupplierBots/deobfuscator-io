@@ -1,5 +1,5 @@
 import { File } from '@babel/types';
-import { utils } from '../common/utils';
+import { utils } from '../../core/utils';
 import { StringsDecoder } from './types/StringsDecoder';
 import { ObfuscatedStringsState } from './types/ObfuscatedStringsState';
 import { SIMPLIFY_EXPRESSIONS } from './visitors/simplifyExpressions';

@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { Identifier, isNodesEquivalent, MemberExpression } from '@babel/types';
-import { getPrevSibling } from '../../common/babelExtensions';
+import { getPrevSibling } from '../../../core/babelExtensions';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { ArrayEncryption } from '../types/ArrayEncryption';
 

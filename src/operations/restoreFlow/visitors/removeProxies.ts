@@ -1,10 +1,10 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { cloneDeepWithoutLoc, MemberExpression, Scopable } from '@babel/types';
-import { ExtendedScope } from '../../common/types/ExtendedScope';
+import { ExtendedScope } from '../../../core/types/ExtendedScope';
 import { BinaryProxy } from '../types/BinaryProxy';
 import { CallProxy } from '../types/CallProxy';
 import { ProxiesContainer } from '../types/ProxiesContainer';
-import { utils } from '../../common/utils';
+import { utils } from '../../../core/utils';
 import { UNWRAP_STRING_LITERALS } from './unwrapStringLiterals';
 import { UNWRAP_FUNCTION_PROXIES } from './unwrapFunctionProxies';
 

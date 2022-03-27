@@ -1,8 +1,8 @@
-import { GlobalState } from './common/types/GlobalState';
-import { utils } from './common/utils';
-import { restoreStrings } from './restoreStrings';
-import { removeControlFlowFlattening } from './removeControlFlowFlattening';
-import { cleanup } from './cleanup';
+import { GlobalState } from './core/types/GlobalState';
+import { utils } from './core/utils';
+import { restoreStrings } from './operations/restoreStrings';
+import { restoreFlow } from './operations/restoreFlow';
+import { cleanup } from './operations/cleanup';
 
 (async () => {
   const start = Date.now();
@@ -15,9 +15,9 @@ import { cleanup } from './cleanup';
   const deofbuscatedAST = utils.run(
     sourceAST,
     globalState,
-    //* Steps *
+    //* Operations *
     restoreStrings,
-    removeControlFlowFlattening,
+    restoreFlow,
     cleanup,
   );
 

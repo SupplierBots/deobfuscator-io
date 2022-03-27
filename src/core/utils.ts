@@ -3,7 +3,7 @@ import * as parser from '@babel/parser';
 import { Expression, File, Node, PrivateName } from '@babel/types';
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse';
 import generate from '@babel/generator';
-import { DeobfuscatorStep } from './types/DeobfuscatorStep';
+import { DeobfuscatorOperation } from './types/DeobfuscatorOperation';
 import { GlobalState } from './types/GlobalState';
 
 export const utils = {
@@ -51,10 +51,10 @@ export const utils = {
   run: (
     ast: File,
     globalState: GlobalState,
-    ...steps: DeobfuscatorStep[]
+    ...operations: DeobfuscatorOperation[]
   ): File => {
-    for (const step of steps) {
-      ast = step(ast, globalState);
+    for (const operation of operations) {
+      ast = operation(ast, globalState);
     }
     return ast;
   },

@@ -1,5 +1,5 @@
 import { File } from '@babel/types';
-import { utils } from '../common/utils';
+import { utils } from '../../core/utils';
 import { RESTORE_DOT_NOTATION } from './visitors/restoreDotNotation';
 
 export const cleanup = (ast: File) => {
