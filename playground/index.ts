@@ -10,7 +10,7 @@ import JavascriptObfuscator from 'javascript-obfuscator';
     compact: false,
     controlFlowFlattening: true,
     controlFlowFlatteningThreshold: 1,
-    deadCodeInjection: false,
+    deadCodeInjection: true,
     deadCodeInjectionThreshold: 1,
     debugProtection: false,
     debugProtectionInterval: false,

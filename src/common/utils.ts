@@ -1,6 +1,6 @@
 import fs from 'fs';
 import * as parser from '@babel/parser';
-import { File, Node } from '@babel/types';
+import { Expression, File, Node, PrivateName } from '@babel/types';
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse';
 import generate from '@babel/generator';
 import { DeobfuscatorStep } from './types/DeobfuscatorStep';
@@ -57,5 +57,14 @@ export const utils = {
       ast = step(ast, globalState);
     }
     return ast;
+  },
+  getPropertyString: (property: NodePath<Expression | PrivateName>) => {
+    if (property.isStringLiteral()) {
+      return property.node.value;
+    }
+    if (property.isIdentifier()) {
+      return property.node.name;
+    }
+    throw new Error('Unexpected property type: ' + property.type);
   },
 };

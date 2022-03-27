@@ -19,6 +19,7 @@ export const UNWRAP_STRING_LITERALS: Visitor<ProxiesContainer> = {
     const propertyName = property.node.value;
 
     if (!(propertyName in stringLiterals)) return;
+
     path.replaceWith(stringLiteral(stringLiterals[propertyName]));
     path.scope.crawl();
     proxiesContainer.foundReferences++;

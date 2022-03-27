@@ -25,6 +25,30 @@ export const REMOVE_SWITCH_STATEMENTS: Visitor = {
     if (!loopBody.isBlockStatement()) return;
     const [bodyStatement] = loopBody.get('body');
     if (!bodyStatement.isSwitchStatement()) return;
+
+    const discriminant = bodyStatement.get('discriminant');
+    if (!discriminant.isMemberExpression()) return;
+    const object = discriminant.get('object');
+    if (!object.isIdentifier()) return;
+    const discriminantProperty = discriminant.get('property');
+    if (!discriminantProperty.isUpdateExpression({ operator: '++' })) return;
+
+    const updateArgument = discriminantProperty.get('argument');
+    if (!updateArgument.isIdentifier()) return;
+
+    const orderStringName = object.node.name;
+    const orderIncrementName = updateArgument.node.name;
+
+    const functionParent = path.getFunctionParent();
+    if (!functionParent) return;
+
+    const orderStringBinding = functionParent.scope.bindings[orderStringName];
+    if (!orderStringBinding) return;
+
+    const orderIncrementBinding =
+      functionParent.scope.bindings[orderIncrementName];
+    if (!orderIncrementBinding) return;
+
     const casesOrder = value.split('|');
     const cases = bodyStatement
       .get('cases')
@@ -44,6 +68,7 @@ export const REMOVE_SWITCH_STATEMENTS: Visitor = {
       return [...nodesArray, ...cases[caseOrder]];
     }, []);
     sibling.replaceWithMultiple(resultNodes);
-    orderDeclaration.remove();
+    orderStringBinding.path.remove();
+    orderIncrementBinding.path.remove();
   },
 };
