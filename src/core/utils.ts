@@ -49,7 +49,10 @@ export const utils = {
     if (!fs.existsSync(outDir)) {
       await fs.promises.mkdir(outDir);
     }
-    await fs.promises.writeFile(`${outDir}/${outputFilename}.js`, code);
+    await fs.promises.writeFile(
+      `${outDir}/${outputFilename}.js`,
+      code.replace(/^\s*$(?:\r\n?|\n)/gm, ''),
+    );
   },
   regenerate: (ast: File) => {
     return parser.parse(generate(ast).code);
