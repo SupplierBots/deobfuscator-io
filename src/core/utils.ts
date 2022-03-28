@@ -38,7 +38,13 @@ export const utils = {
     return state;
   },
   generateOutput: async (ast: File, outputFilename: string) => {
-    const { code } = generate(ast);
+    const { code } = generate(ast, {
+      jsescOption: {
+        quotes: 'single',
+        numbers: 'decimal',
+        minimal: true,
+      },
+    });
     const outDir = './out';
     if (!fs.existsSync(outDir)) {
       await fs.promises.mkdir(outDir);
