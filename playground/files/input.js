@@ -40,6 +40,9 @@ console.log(trapper);
       console.log('mno');
     };
 
+    var longStr =
+      'veryveryveryveryveryveryveryveryveryveryveryveryveryveryveryverylongstring';
+
     foo();
     bar();
     baz();

@@ -156,9 +156,8 @@ export const REMOVE_PROXIES: Visitor = {
           UNWRAP_FUNCTION_PROXIES,
         );
 
-        if (referencesCount !== proxiesContainer.foundReferences) {
+        if (referencesCount > proxiesContainer.foundReferences) {
           console.log(proxiesContainer);
-          console.log(path.toString());
           throw new Error(`Couldn't find all references! ${name}`);
         } else {
           binding.path.remove();
