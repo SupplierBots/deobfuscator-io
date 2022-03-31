@@ -1,12 +1,12 @@
 import { NodePath, Visitor } from '@babel/traverse';
-import { cloneDeepWithoutLoc, MemberExpression, Scopable } from '@babel/types';
+import { identifier, Scopable } from '@babel/types';
 import { ExtendedScope } from '../../../core/types/ExtendedScope';
 import { BinaryProxy } from '../types/BinaryProxy';
 import { CallProxy } from '../types/CallProxy';
 import { ProxiesContainer } from '../types/ProxiesContainer';
 import { utils } from '../../../core/utils';
-import { UNWRAP_STRING_LITERALS } from './unwrapStringLiterals';
-import { UNWRAP_FUNCTION_PROXIES } from './unwrapFunctionProxies';
+import { removeCallProxy } from '../helpers/removeCallProxy';
+import { removeLiteralProxy } from '../helpers/removeLiteralProxy';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';
 
@@ -34,10 +34,6 @@ export const REMOVE_PROXIES: Visitor = {
         const scopeUid: number = (binding.scope as ExtendedScope).uid;
         const referencesCount = binding.referencePaths.filter((r) => r.node.loc)
           .length;
-        const references = binding.referencePaths
-          .filter((r) => r.node.loc)
-          .map((r) => r.findParent((p) => p.isMemberExpression()))
-          .filter(Boolean) as NodePath<MemberExpression>[];
 
         const proxiesContainer: ProxiesContainer = {
           name,
@@ -45,7 +41,6 @@ export const REMOVE_PROXIES: Visitor = {
           stringLiterals: {},
           binaryProxies: {},
           callProxies: {},
-          memberExpressionProxies: {},
           foundReferences: 0,
           fakeReferences: 0,
           referencesCount,
@@ -69,19 +64,12 @@ export const REMOVE_PROXIES: Visitor = {
             proxiesContainer.keys.push(keyValue);
 
             const propertyValue = p.get('value');
+            propertyValue.scope.crawl();
 
             if (propertyValue.isStringLiteral()) {
               proxiesContainer.stringLiterals[keyValue] =
                 propertyValue.node.value;
-            }
-
-            if (propertyValue.isMemberExpression()) {
-              proxiesContainer.memberExpressionProxies[
-                keyValue
-              ] = cloneDeepWithoutLoc(propertyValue.node);
-            }
-
-            if (propertyValue.isFunctionExpression()) {
+            } else if (propertyValue.isFunctionExpression()) {
               const proxy: BinaryProxy = {
                 left: null,
                 right: null,
@@ -91,7 +79,6 @@ export const REMOVE_PROXIES: Visitor = {
                 callee: null,
                 params: [],
               };
-
               for (const functionBinding of Object.values(
                 propertyValue.scope.bindings,
               )) {
@@ -100,8 +87,9 @@ export const REMOVE_PROXIES: Visitor = {
                   !functionBinding.constant ||
                   functionBinding.references !== 1 ||
                   !functionBinding.path.isIdentifier()
-                )
+                ) {
                   return false;
+                }
 
                 const [paramRef] = functionBinding.referencePaths;
 
@@ -132,6 +120,8 @@ export const REMOVE_PROXIES: Visitor = {
               if (callProxy.callee !== null) {
                 proxiesContainer.callProxies[keyValue] = callProxy;
               }
+            } else {
+              return false;
             }
 
             return true;
@@ -139,29 +129,44 @@ export const REMOVE_PROXIES: Visitor = {
         ) {
           continue;
         }
+        while (path.scope.bindings[name].referenced) {
+          const ref = path.scope.bindings[name].referencePaths[0];
+          const refExpression = ref.findParent((p) => p.isMemberExpression());
+          if (!refExpression?.isMemberExpression()) {
+            proxiesContainer.fakeReferences++;
+            proxiesContainer.foundReferences++;
+            ref.replaceWith(identifier('fakeReference'));
+            path.scope.crawl();
+            continue;
+          }
 
-        references.forEach((ref) => {
-          const property = ref.get('property');
+          const property = refExpression.get('property');
           const propertyString = utils.getPropertyString(property);
+          let isRemoved = false;
           if (!proxiesContainer.keys.includes(propertyString)) {
             proxiesContainer.fakeReferences++;
             proxiesContainer.foundReferences++;
+            ref.replaceWith(identifier('fakeReference'));
+            isRemoved = true;
+          } else if (
+            refExpression.key === 'callee' &&
+            refExpression.parentPath.isCallExpression()
+          ) {
+            isRemoved =
+              removeCallProxy(refExpression.parentPath, proxiesContainer) ??
+              false;
+          } else {
+            isRemoved = removeLiteralProxy(refExpression, proxiesContainer);
           }
-        });
-
-        utils.runPathVisitors(
-          path,
-          proxiesContainer,
-          UNWRAP_STRING_LITERALS,
-          UNWRAP_FUNCTION_PROXIES,
-        );
-
-        if (referencesCount > proxiesContainer.foundReferences) {
-          console.log(proxiesContainer);
-          throw new Error(`Couldn't find all references! ${name}`);
-        } else {
-          binding.path.remove();
+          if (!isRemoved) {
+            console.log(proxiesContainer);
+            throw new Error(
+              `Couldn't replace reference: ${refExpression.toString()}'}`,
+            );
+          }
+          path.scope.crawl();
         }
+        binding.path.remove();
       }
     },
   },

@@ -40,10 +40,16 @@ export const REMOVE_DEBUG_PROTECTION: Visitor = {
       return;
     removeCallWrapper(hookExpression);
     hookExpression.getFunctionParent()?.getStatementParent()?.remove();
-    const intervalCall = debugLoopBinding.referencePaths.find(
-      (r) => !r.removed,
-    );
-    intervalCall?.getFunctionParent()?.getStatementParent()?.remove();
+    debugLoopBinding.referencePaths.forEach((r) => {
+      const statement = r.getStatementParent();
+      if (!statement) return;
+      const fnParent = statement.getFunctionParent();
+      if (fnParent?.isFunctionExpression() && fnParent.key === 'callee') {
+        fnParent.getStatementParent()?.remove();
+      } else {
+        statement.remove();
+      }
+    });
     debugLoopBinding.path.remove();
   },
 };
