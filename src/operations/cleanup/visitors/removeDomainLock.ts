@@ -1,6 +1,7 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { NewExpression, StringLiteral } from '@babel/types';
 import { getNextSibling } from '../../../core/babelExtensions';
+import { isCallWrapper } from '../helpers/isCallWrapper';
 import { removeCallWrapper } from '../helpers/removeCallWrapper';
 
 export const REMOVE_DOMAIN_LOCK: Visitor = {
@@ -45,13 +46,9 @@ export const REMOVE_DOMAIN_LOCK: Visitor = {
     const functionParent = statement.getFunctionParent();
     if (!functionParent || functionParent.key !== 1) return;
     const hookExpression = functionParent.parentPath;
-    if (!hookExpression.isCallExpression()) return;
-    const hoolCallArguments = hookExpression.get('arguments');
-    if (
-      hoolCallArguments.length !== 2 ||
-      !hoolCallArguments[0].isThisExpression()
-    )
+    if (!hookExpression.isCallExpression() || !isCallWrapper(hookExpression))
       return;
+
     const hookDeclarator = hookExpression.parentPath;
     if (!hookDeclarator.isVariableDeclarator()) return;
     const hookId = hookDeclarator.get('id');
