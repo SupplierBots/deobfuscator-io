@@ -1,6 +1,5 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { Identifier, isNodesEquivalent, MemberExpression } from '@babel/types';
-import { getPrevSibling } from '../../../core/babelExtensions';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { ArrayEncryption } from '../types/ArrayEncryption';
 
@@ -41,7 +40,7 @@ export const FIND_ARRAY_FUNCTIONS: Visitor<ObfuscatedStringsState> = {
 
     const statement = object.getStatementParent();
     if (!statement) return;
-    const previousPath = getPrevSibling(statement);
+    const previousPath = statement.getPrevSibling();
     if (!previousPath.isExpressionStatement()) return;
     const expression = previousPath.get('expression');
     if (!expression.isAssignmentExpression()) return;

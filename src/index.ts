@@ -4,6 +4,8 @@ import { restoreStrings } from './operations/restoreStrings';
 import { restoreFlow } from './operations/restoreFlow';
 import { cleanup } from './operations/cleanup';
 
+import '@core/pathExtensions';
+
 (async () => {
   const start = Date.now();
   const [sourceFilename] = process.argv.slice(2);

@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@core/*": [
+        "core/*"
+      ],
+    },
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
@@ -11,5 +17,10 @@
   },
   "lib": [
     "es2015"
-  ]
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
 }

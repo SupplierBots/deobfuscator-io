@@ -1,7 +1,5 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { NewExpression } from '@babel/types';
-import { isCallWrapper } from '../helpers/isCallWrapper';
-import { removeCallWrapper } from '../helpers/removeCallWrapper';
 
 export const REMOVE_DEBUG_PROTECTION: Visitor = {
   NewExpression(path: NodePath<NewExpression>) {
@@ -28,28 +26,33 @@ export const REMOVE_DEBUG_PROTECTION: Visitor = {
     const debugLoopId = init.get('callee');
     if (!debugLoopId.isIdentifier()) return;
     const debugLoopName = debugLoopId.node.name;
-    const debugLoopBinding = path.find((p) =>
-      p.scope.hasOwnBinding(debugLoopName),
-    )?.scope.bindings[debugLoopName];
+    const debugLoopBinding = path.findBinding(debugLoopName);
     if (!debugLoopBinding) return;
-
-    const functionParent = path.getFunctionParent();
-    if (!functionParent || functionParent.key !== 1) return;
-    const hookExpression = functionParent.parentPath;
-    if (!hookExpression.isCallExpression() || !isCallWrapper(hookExpression))
-      return;
-    removeCallWrapper(hookExpression);
-    hookExpression.getFunctionParent()?.getStatementParent()?.remove();
-    debugLoopBinding.referencePaths.forEach((r) => {
-      const statement = r.getStatementParent();
-      if (!statement) return;
-      const fnParent = statement.getFunctionParent();
-      if (fnParent?.isFunctionExpression() && fnParent.key === 'callee') {
-        fnParent.getStatementParent()?.remove();
-      } else {
-        statement.remove();
+    debugLoopBinding.referencePaths.forEach((ref) => {
+      if (!ref.parentPath?.isCallExpression()) return;
+      if (ref.key === 0) {
+        const id = ref.parentPath?.get('callee.property');
+        if (
+          !Array.isArray(id) &&
+          id?.isIdentifier() &&
+          id.node.name === 'setInterval'
+        ) {
+          ref
+            .getStatementParent()
+            ?.getFunctionParent()
+            ?.getStatementParent()
+            ?.remove();
+          return;
+        }
       }
+      if (ref.key !== 'callee') return;
+      const expression = ref.getFunctionParent()?.parentPath;
+      if (!expression?.isCallExpression()) return;
+      const callee = expression.get('callee');
+      if (!callee.isIdentifier({ name: 'setInterval' })) return;
+      expression.getStatementParent()?.remove();
     });
+    init.getFunctionParent()?.remove();
     debugLoopBinding.path.remove();
   },
 };

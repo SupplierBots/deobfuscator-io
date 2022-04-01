@@ -19,4 +19,10 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
+  },
+  plugins: ['import'],
 };

@@ -1,8 +1,5 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { NewExpression, StringLiteral } from '@babel/types';
-import { getNextSibling } from '../../../core/babelExtensions';
-import { isCallWrapper } from '../helpers/isCallWrapper';
-import { removeCallWrapper } from '../helpers/removeCallWrapper';
 
 export const REMOVE_DOMAIN_LOCK: Visitor = {
   NewExpression(path: NodePath<NewExpression>) {
@@ -17,8 +14,8 @@ export const REMOVE_DOMAIN_LOCK: Visitor = {
     if (!/^\[.+\]$/.test(patternValue)) return;
     const statement = path.getStatementParent();
     if (!statement?.isVariableDeclaration()) return;
-    const nextPath = getNextSibling(statement);
-    if (!nextPath.isVariableDeclaration()) return;
+    const nextPath = statement.getNextSibling();
+    if (!nextPath?.isVariableDeclaration()) return;
 
     let matchString;
     try {
@@ -44,19 +41,6 @@ export const REMOVE_DOMAIN_LOCK: Visitor = {
     if (matchingChars !== trimmedPattern) return;
 
     const functionParent = statement.getFunctionParent();
-    if (!functionParent || functionParent.key !== 1) return;
-    const hookExpression = functionParent.parentPath;
-    if (!hookExpression.isCallExpression() || !isCallWrapper(hookExpression))
-      return;
-
-    const hookDeclarator = hookExpression.parentPath;
-    if (!hookDeclarator.isVariableDeclarator()) return;
-    const hookId = hookDeclarator.get('id');
-    if (!hookId.isIdentifier()) return;
-    const hookBinding = hookId.scope.bindings[hookId.node.name];
-
-    removeCallWrapper(hookExpression);
-    hookBinding.referencePaths.forEach((r) => r.getStatementParent()?.remove());
-    hookBinding.path.remove();
+    functionParent?.remove();
   },
 };

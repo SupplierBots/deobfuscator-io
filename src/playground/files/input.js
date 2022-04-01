@@ -10,10 +10,8 @@ function hi() {
   }
   xd();
 }
-
 console.log('A to jest pierwszy call w Polsce');
 hi();
-
 const trapper = {
   swag: 100,
   mordo: 'weź',
@@ -21,36 +19,29 @@ const trapper = {
   ['jago dzianki']: 'no  no',
 };
 console.log(trapper);
-
 (function () {
-  if (true) {
-    var foo = function () {
-      console.log('abc');
-    };
-    var bar = function () {
-      console.log('def');
-    };
-    var baz = function () {
-      console.log('ghi');
-    };
-    var bark = function () {
-      console.log('jkl');
-    };
-    var hawk = function () {
-      console.log('mno');
-    };
-
-    var longStr =
-      'veryveryveryveryveryveryveryveryveryveryveryveryveryveryveryverylongstring';
-
-    foo();
-    bar();
-    baz();
-    bark();
-    hawk();
-  }
+  var foo = function () {
+    console.log('abc');
+  };
+  var bar = function () {
+    console.log('def');
+  };
+  var baz = function () {
+    console.log('ghi');
+  };
+  var bark = function () {
+    console.log('jkl');
+  };
+  var hawk = function () {
+    console.log('mno');
+  };
+  var T = 'veryveryveryveryveryveryveryveryveryverylongstring';
+  foo();
+  bar();
+  baz();
+  bark();
+  hawk();
 })();
-
 (function () {
   function foo() {
     return function () {
@@ -63,6 +54,5 @@ console.log(trapper);
       console.log(6);
     };
   }
-
   foo()();
 })();

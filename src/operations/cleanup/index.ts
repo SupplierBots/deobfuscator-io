@@ -1,6 +1,7 @@
 import { File } from '@babel/types';
 import { utils } from '../../core/utils';
 import { ADD_MISSING_BLOCK_STATEMENTS } from './visitors/addMissingBlockStatements';
+import { REMOVE_CALL_WRAPPERS } from './visitors/removeCallWrappers';
 import { REMOVE_DEAD_PATHS } from './visitors/removeDeadPaths';
 import { REMOVE_DEBUG_PROTECTION } from './visitors/removeDebugProtection';
 import { REMOVE_DOMAIN_LOCK } from './visitors/removeDomainLock';
@@ -19,6 +20,7 @@ export const cleanup = (ast: File) => {
     RESTORE_DOT_NOTATION,
     REMOVE_DOMAIN_LOCK,
     REMOVE_DEBUG_PROTECTION,
+    REMOVE_CALL_WRAPPERS,
   );
   return ast;
 };
