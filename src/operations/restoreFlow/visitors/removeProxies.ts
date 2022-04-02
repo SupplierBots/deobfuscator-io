@@ -142,6 +142,15 @@ export const REMOVE_PROXIES: Visitor = {
 
           const property = refExpression.get('property');
           const propertyString = utils.getPropertyString(property);
+
+          if (!propertyString) {
+            proxiesContainer.fakeReferences++;
+            proxiesContainer.foundReferences++;
+            ref.replaceWith(identifier('fakeReference'));
+            path.scope.crawl();
+            continue;
+          }
+
           let isRemoved = false;
           if (!proxiesContainer.keys.includes(propertyString)) {
             proxiesContainer.fakeReferences++;

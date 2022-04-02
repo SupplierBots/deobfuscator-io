@@ -5,6 +5,7 @@ import { restoreFlow } from './operations/restoreFlow';
 import { cleanup } from './operations/cleanup';
 
 import '@core/pathExtensions';
+import '@core/scopeExtensions';
 
 (async () => {
   const start = Date.now();

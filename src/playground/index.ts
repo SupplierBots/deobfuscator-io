@@ -1,12 +1,12 @@
 import path from 'path';
 import fs from 'fs/promises';
-import JavascriptObfuscator from 'javascript-obfuscator';
+import { obfuscate } from 'javascript-obfuscator';
 (async () => {
   const input = await fs.readFile(
     path.resolve(__dirname, 'files', 'input.js'),
     { encoding: 'utf-8' },
   );
-  const obfuscationResult = JavascriptObfuscator.obfuscate(input, {
+  const obfuscationResult = obfuscate(input, {
     compact: false,
     controlFlowFlattening: true,
     controlFlowFlatteningThreshold: 1,

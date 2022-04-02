@@ -19,6 +19,7 @@ export const FIND_STRING_ARRAY: Visitor<ObfuscatedStringsState> = {
     const id = parent.get('id');
     if (!id.isIdentifier()) return;
 
+    state.stringArrayBinding = path.findBinding(id.node.name);
     state.stringArrayIdentifier = id;
     state.stringArrayValues = elements.map((e) => {
       if (!e.isStringLiteral()) return '';

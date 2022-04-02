@@ -40,6 +40,7 @@ export const UNROTATE_ARRAY: Visitor<ObfuscatedStringsState> = {
           }
 
           const parseExpression = cloneDeepWithoutLoc(init.node);
+
           while (true) {
             try {
               init.traverse(REPLACE_CALL_EXPRESSIONS, state);

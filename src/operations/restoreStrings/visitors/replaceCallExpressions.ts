@@ -24,11 +24,16 @@ export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
     }
 
     const [first, second] = path.get('arguments');
+
     if (!first.isStringLiteral() && !first.isNumericLiteral()) {
+      const bindingUid = path.findBinding(callee.node.name)?.scope.getUid();
+      if (bindingUid !== state.stringArrayBinding?.scope.getUid()) return;
       throw new Error("Unexpected first array function's argument");
     }
 
     if (second && !second.isStringLiteral() && !second.isNumericLiteral()) {
+      const bindingUid = path.findBinding(callee.node.name)?.scope.getUid();
+      if (bindingUid !== state.stringArrayBinding?.scope.getUid()) return;
       throw new Error("Unexpected second array function's argument");
     }
 

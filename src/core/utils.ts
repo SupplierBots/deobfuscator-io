@@ -74,6 +74,6 @@ export const utils = {
     if (property.isIdentifier()) {
       return property.node.name;
     }
-    throw new Error('Unexpected property type: ' + property.type);
+    return null;
   },
 };
