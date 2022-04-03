@@ -1,12 +1,12 @@
 import { NodePath, Visitor } from '@babel/traverse';
-import { identifier, Scopable } from '@babel/types';
+import { Scopable } from '@babel/types';
 import { ExtendedScope } from '../../../core/types/ExtendedScope';
 import { BinaryProxy } from '../types/BinaryProxy';
 import { CallProxy } from '../types/CallProxy';
-import { ProxiesContainer } from '../types/ProxiesContainer';
-import { utils } from '../../../core/utils';
+import { ProxiesState } from '../types/ProxiesState';
 import { removeCallProxy } from '../helpers/removeCallProxy';
 import { removeLiteralProxy } from '../helpers/removeLiteralProxy';
+import { markDeadReference } from '../helpers/markDeadReference';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';
 
@@ -35,7 +35,7 @@ export const REMOVE_PROXIES: Visitor = {
         const referencesCount = binding.referencePaths.filter((r) => r.node.loc)
           .length;
 
-        const proxiesContainer: ProxiesContainer = {
+        const state: ProxiesState = {
           name,
           keys: [],
           stringLiterals: {},
@@ -61,14 +61,13 @@ export const REMOVE_PROXIES: Visitor = {
               keyValue = key.node.name;
             }
             if (!keyValue || keyValue.length !== 5) return false;
-            proxiesContainer.keys.push(keyValue);
+            state.keys.push(keyValue);
 
             const propertyValue = p.get('value');
             propertyValue.scope.crawl();
 
             if (propertyValue.isStringLiteral()) {
-              proxiesContainer.stringLiterals[keyValue] =
-                propertyValue.node.value;
+              state.stringLiterals[keyValue] = propertyValue.node.value;
             } else if (propertyValue.isFunctionExpression()) {
               const proxy: BinaryProxy = {
                 left: null,
@@ -114,11 +113,11 @@ export const REMOVE_PROXIES: Visitor = {
                 }
               }
               if (Object.values(proxy).every((p) => p !== null)) {
-                proxiesContainer.binaryProxies[keyValue] = proxy;
+                state.binaryProxies[keyValue] = proxy;
               }
 
               if (callProxy.callee !== null) {
-                proxiesContainer.callProxies[keyValue] = callProxy;
+                state.callProxies[keyValue] = callProxy;
               }
             } else {
               return false;
@@ -129,46 +128,41 @@ export const REMOVE_PROXIES: Visitor = {
         ) {
           continue;
         }
+        path.scope.crawl();
+
         while (path.scope.bindings[name].referenced) {
           const ref = path.scope.bindings[name].referencePaths[0];
           const refExpression = ref.findParent((p) => p.isMemberExpression());
+
           if (!refExpression?.isMemberExpression()) {
-            proxiesContainer.fakeReferences++;
-            proxiesContainer.foundReferences++;
-            ref.replaceWith(identifier('fakeReference'));
+            markDeadReference(ref, state);
             path.scope.crawl();
             continue;
           }
 
           const property = refExpression.get('property');
-          const propertyString = utils.getPropertyString(property);
-
-          if (!propertyString) {
-            proxiesContainer.fakeReferences++;
-            proxiesContainer.foundReferences++;
-            ref.replaceWith(identifier('fakeReference'));
+          if (!property.isStringLiteral() && !property.isIdentifier()) {
+            markDeadReference(ref, state);
             path.scope.crawl();
             continue;
           }
 
+          const propertyValue = property.getValue();
           let isRemoved = false;
-          if (!proxiesContainer.keys.includes(propertyString)) {
-            proxiesContainer.fakeReferences++;
-            proxiesContainer.foundReferences++;
-            ref.replaceWith(identifier('fakeReference'));
+          if (!state.keys.includes(propertyValue)) {
+            markDeadReference(ref, state);
             isRemoved = true;
           } else if (
             refExpression.key === 'callee' &&
             refExpression.parentPath.isCallExpression()
           ) {
             isRemoved =
-              removeCallProxy(refExpression.parentPath, proxiesContainer) ??
-              false;
+              removeCallProxy(refExpression.parentPath, state) ?? false;
           } else {
-            isRemoved = removeLiteralProxy(refExpression, proxiesContainer);
+            isRemoved = removeLiteralProxy(refExpression, state);
           }
           if (!isRemoved) {
-            console.log(proxiesContainer);
+            console.log(state);
             throw new Error(
               `Couldn't replace reference: ${refExpression.toString()}'}`,
             );

@@ -1,12 +1,12 @@
 import { NodePath } from '@babel/traverse';
 import { MemberExpression, stringLiteral } from '@babel/types';
-import { ProxiesContainer } from '../types/ProxiesContainer';
+import { ProxiesState } from '../types/ProxiesState';
 
 export const removeLiteralProxy = (
   path: NodePath<MemberExpression>,
-  proxiesContainer: ProxiesContainer,
+  state: ProxiesState,
 ) => {
-  const { stringLiterals } = proxiesContainer;
+  const { stringLiterals } = state;
 
   const property = path.get('property');
   if (!property.isStringLiteral()) return false;
@@ -15,6 +15,6 @@ export const removeLiteralProxy = (
   if (!(propertyName in stringLiterals)) return false;
 
   path.replaceWith(stringLiteral(stringLiterals[propertyName]));
-  proxiesContainer.foundReferences++;
+  state.foundReferences++;
   return true;
 };

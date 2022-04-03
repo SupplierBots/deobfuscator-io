@@ -1,6 +1,6 @@
 import fs from 'fs';
 import * as parser from '@babel/parser';
-import { Expression, File, Node, PrivateName } from '@babel/types';
+import { File, Node } from '@babel/types';
 import traverse, { NodePath, TraverseOptions } from '@babel/traverse';
 import generate from '@babel/generator';
 import { DeobfuscatorOperation } from './types/DeobfuscatorOperation';
@@ -66,14 +66,5 @@ export const utils = {
       ast = operation(ast, globalState);
     }
     return ast;
-  },
-  getPropertyString: (property: NodePath<Expression | PrivateName>) => {
-    if (property.isStringLiteral()) {
-      return property.node.value;
-    }
-    if (property.isIdentifier()) {
-      return property.node.name;
-    }
-    return null;
   },
 };

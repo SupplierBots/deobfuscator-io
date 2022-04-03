@@ -1,7 +1,7 @@
 import { BinaryProxy } from './BinaryProxy';
 import { CallProxy } from './CallProxy';
 
-export interface ProxiesContainer {
+export interface ProxiesState {
   name: string;
   keys: string[];
   scopeUid: number;

@@ -7,16 +7,16 @@ import {
   Expression,
   logicalExpression,
 } from '@babel/types';
-import { ProxiesContainer } from '../types/ProxiesContainer';
+import { ProxiesState } from '../types/ProxiesState';
 
 export const removeCallProxy = (
   path: NodePath<CallExpression>,
-  proxiesContainer: ProxiesContainer,
+  state: ProxiesState,
 ) => {
   const callee = path.get('callee');
   if (!callee.isMemberExpression()) return false;
 
-  const { binaryProxies, callProxies } = proxiesContainer;
+  const { binaryProxies, callProxies } = state;
 
   const property = callee.get('property');
   if (!property.isStringLiteral()) return false;
@@ -59,7 +59,7 @@ export const removeCallProxy = (
             cloneDeepWithoutLoc(rightArg.node),
           );
     path.replaceWith(binaryReplacement);
-    proxiesContainer.foundReferences++;
+    state.foundReferences++;
     return true;
   }
 
@@ -96,7 +96,7 @@ export const removeCallProxy = (
     );
 
     path.replaceWith(callReplacement);
-    proxiesContainer.foundReferences++;
+    state.foundReferences++;
     return true;
   }
 };
