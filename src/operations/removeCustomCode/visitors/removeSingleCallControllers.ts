@@ -1,7 +1,7 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { ConditionalExpression } from '@babel/types';
 
-export const REMOVE_CALL_WRAPPERS: Visitor = {
+export const REMOVE_SINGLE_CALL_CONTROLLERS: Visitor = {
   ConditionalExpression(path: NodePath<ConditionalExpression>) {
     if (path.key !== 'init') return;
     if (!path.get('consequent').isFunctionExpression()) return;
@@ -30,17 +30,9 @@ export const REMOVE_CALL_WRAPPERS: Visitor = {
       if (ref.key !== 'callee') return;
       const refParent = ref.parentPath;
       if (!refParent?.isCallExpression()) return;
-      if (!refParent.get('arguments')[0].isThisExpression()) return;
-      const statement = ref.getStatementParent();
-      if (!statement) return;
-      if (statement.isExpressionStatement()) {
-        statement.getFunctionParent()?.getStatementParent()?.remove();
-      } else {
-        const statementSibling = statement.getNextSibling();
-        if (!statementSibling) return;
-        statementSibling.remove();
-        statement.remove();
-      }
+      const args = refParent.get('arguments');
+      if (args.length !== 2 || !args[0].isThisExpression()) return;
+      refParent.replaceWith(args[1].node);
     });
     outerStatement.remove();
   },

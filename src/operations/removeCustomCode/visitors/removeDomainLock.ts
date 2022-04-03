@@ -1,5 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { NewExpression, StringLiteral } from '@babel/types';
+import { removeCustomCodeCall } from '../handlers/removeCustomCodeCall';
 
 export const REMOVE_DOMAIN_LOCK: Visitor = {
   NewExpression(path: NodePath<NewExpression>) {
@@ -40,7 +41,8 @@ export const REMOVE_DOMAIN_LOCK: Visitor = {
     }
     if (matchingChars !== trimmedPattern) return;
 
-    const functionParent = statement.getFunctionParent();
-    functionParent?.remove();
+    const lockFunction = statement.getFunctionParent();
+    if (!lockFunction?.isFunctionParent()) return;
+    removeCustomCodeCall(lockFunction);
   },
 };

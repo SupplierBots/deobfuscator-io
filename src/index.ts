@@ -1,8 +1,9 @@
-import { GlobalState } from './core/types/GlobalState';
 import { utils } from './core/utils';
+import { GlobalState } from './core/types/GlobalState';
 import { restoreStrings } from './operations/restoreStrings';
 import { restoreFlow } from './operations/restoreFlow';
 import { cleanup } from './operations/cleanup';
+import { removeCustomCode } from 'operations/removeCustomCode';
 
 import '@core/pathExtensions';
 import '@core/scopeExtensions';
@@ -22,6 +23,7 @@ import '@core/scopeExtensions';
     restoreStrings,
     restoreFlow,
     cleanup,
+    removeCustomCode,
   );
 
   await utils.generateOutput(deofbuscatedAST, sourceFilename);

@@ -1,5 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { NewExpression } from '@babel/types';
+import { removeCustomCodeCall } from '../handlers/removeCustomCodeCall';
 
 export const REMOVE_DEBUG_PROTECTION: Visitor = {
   NewExpression(path: NodePath<NewExpression>) {
@@ -52,7 +53,10 @@ export const REMOVE_DEBUG_PROTECTION: Visitor = {
       if (!callee.isIdentifier({ name: 'setInterval' })) return;
       expression.getStatementParent()?.remove();
     });
-    init.getFunctionParent()?.remove();
+    const parent = init.getFunctionParent();
+    if (parent?.isFunctionParent()) {
+      removeCustomCodeCall(parent);
+    }
     debugLoopBinding.path.remove();
   },
 };

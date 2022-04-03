@@ -4,3 +4,4 @@ node_modules
 fixtures
 dist
 out
+src/playground/files

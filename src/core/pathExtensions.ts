@@ -7,6 +7,7 @@ declare module '@babel/traverse' {
   interface NodePath {
     findBinding(this: NodePath, name: string): Binding | undefined;
     getValue(this: NodePath<StringLiteral | Identifier>): string;
+    toString(this: NodePath): string;
   }
 }
 NodePath.prototype.findBinding = function (name: string): Binding | undefined {
