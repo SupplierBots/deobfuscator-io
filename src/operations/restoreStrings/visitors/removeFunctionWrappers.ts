@@ -14,6 +14,8 @@ import {
   Scopable,
   VariableDeclarator,
 } from '@babel/types';
+import { PathKey } from '@core/types/PathKey';
+import { PathListKey } from '@core/types/PathListKey';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';
@@ -35,8 +37,8 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<ObfuscatedStringsState> = {
       let wrapperDeclarator: NodePath<FunctionDeclaration | VariableDeclarator>;
 
       if (bindingStatement.isVariableDeclaration()) {
-        const [declarator] = bindingStatement.get('declarations');
-        const init = declarator.get('init');
+        const [declarator] = bindingStatement.get(PathListKey.Declarations);
+        const init = declarator.get(PathKey.Init);
         if (!init.isFunctionExpression() && !init.isArrowFunctionExpression())
           continue;
         functionPath = init;
@@ -48,13 +50,13 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<ObfuscatedStringsState> = {
         continue;
       }
 
-      const functionBody = functionPath.get('body');
+      const functionBody = functionPath.get(PathKey.Body);
       if (!functionBody.isBlockStatement()) continue;
-      const [bodyStatement] = functionBody.get('body');
+      const [bodyStatement] = functionBody.get(PathListKey.Body);
       if (!bodyStatement?.isReturnStatement()) continue;
-      const returnArgument = bodyStatement.get('argument');
+      const returnArgument = bodyStatement.get(PathKey.Argument);
       if (!returnArgument.isCallExpression()) continue;
-      const callee = returnArgument.get('callee');
+      const callee = returnArgument.get(PathKey.Callee);
       if (!callee.isIdentifier()) continue;
 
       const originalFunctionName = Object.keys(state.arrayFunctions).find(
@@ -101,7 +103,7 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<ObfuscatedStringsState> = {
 
       for (const reference of binding.referencePaths) {
         if (!reference.parentPath?.isCallExpression()) continue;
-        const args = reference.parentPath.get('arguments');
+        const args = reference.parentPath.get(PathListKey.Arguments);
         const clonedArgs: Expression[] = [];
         for (const param of referencedParams) {
           const argument = args[param.index];

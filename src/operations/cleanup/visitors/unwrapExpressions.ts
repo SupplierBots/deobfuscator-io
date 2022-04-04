@@ -7,13 +7,15 @@ import {
   returnStatement,
   SequenceExpression,
 } from '@babel/types';
+import { PathKey } from '@core/types/PathKey';
+import { PathListKey } from '@core/types/PathListKey';
 
 export const UNWRAP_EXPRESSIONS: Visitor = {
   LogicalExpression: function (path: NodePath<LogicalExpression>) {
     const parent = path.parentPath;
     if (path.node.operator !== '&&' || !parent.isExpressionStatement()) return;
-    const consequent = path.get('right');
-    const condition = path.get('left');
+    const consequent = path.get(PathKey.Right);
+    const condition = path.get(PathKey.Left);
     const consequentBlock = blockStatement([
       expressionStatement(consequent.node),
     ]);
@@ -22,7 +24,7 @@ export const UNWRAP_EXPRESSIONS: Visitor = {
   },
   SequenceExpression: function (path: NodePath<SequenceExpression>) {
     const parent = path.parentPath;
-    const expressions = path.get('expressions');
+    const expressions = path.get(PathListKey.Expressions);
     const statements = expressions.map((e) => expressionStatement(e.node));
 
     if (parent.isExpressionStatement()) {
@@ -33,9 +35,9 @@ export const UNWRAP_EXPRESSIONS: Visitor = {
     if (parent.isConditionalExpression()) {
       const parentStatement = parent.parentPath;
       if (!parentStatement.isExpressionStatement()) return;
-      const condition = parent.get('test');
-      const consequent = parent.get('consequent');
-      const alternate = parent.get('alternate');
+      const condition = parent.get(PathKey.Test);
+      const consequent = parent.get(PathKey.Consequent);
+      const alternate = parent.get(PathKey.Alternate);
       const consequentBlock = blockStatement([
         expressionStatement(consequent.node),
       ]);

@@ -1,5 +1,7 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { CallExpression, stringLiteral } from '@babel/types';
+import { PathKey } from '@core/types/PathKey';
+import { PathListKey } from '@core/types/PathListKey';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
 export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
@@ -7,7 +9,7 @@ export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
     path: NodePath<CallExpression>,
     state: ObfuscatedStringsState,
   ) {
-    const callee = path.get('callee');
+    const callee = path.get(PathKey.Callee);
     if (
       !callee.isIdentifier() ||
       !state.decoder?.isDecoderFunction(callee.node.name)
@@ -17,13 +19,13 @@ export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
 
     const functionParent = path.getFunctionParent();
     if (functionParent?.isFunctionDeclaration()) {
-      const id = functionParent.get('id');
+      const id = functionParent.get(PathKey.Id);
       if (id.isIdentifier() && state.decoder.isDecoderFunction(id.node.name)) {
         return; //* Call expression is from declaration's return statement
       }
     }
 
-    const [first, second] = path.get('arguments');
+    const [first, second] = path.get(PathListKey.Arguments);
 
     if (!first.isStringLiteral() && !first.isNumericLiteral()) {
       const bindingUid = path.findBinding(callee.node.name)?.scope.getUid();

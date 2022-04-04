@@ -4,23 +4,27 @@ import {
   Conditional,
   expressionStatement,
 } from '@babel/types';
+import { PathKey } from '@core/types/PathKey';
+import { PathListKey } from '@core/types/PathListKey';
 
 export const REMOVE_DEAD_PATHS: Visitor = {
   Conditional: function (path: NodePath<Conditional>) {
-    const condition = path.get('test');
+    const condition = path.get(PathKey.Test);
     const { confident, value } = condition.evaluate();
     if (!confident) return;
     const statement = path.isStatement() ? path : path.getStatementParent();
     if (!statement) return;
 
-    const evaluatedPath = path.get(value ? 'consequent' : 'alternate');
+    const evaluatedPath = path.get(
+      value ? PathKey.Consequent : PathKey.Alternate,
+    );
     if (evaluatedPath.node === null) {
       statement.remove();
       return;
     }
 
     if (evaluatedPath.isBlockStatement()) {
-      const nodes = evaluatedPath.get('body').map((r) => r.node);
+      const nodes = evaluatedPath.get(PathListKey.Body).map((r) => r.node);
       statement.replaceWithMultiple(nodes);
       return;
     }

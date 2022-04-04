@@ -1,5 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import { MemberExpression, stringLiteral } from '@babel/types';
+import { PathKey } from '@core/types/PathKey';
 import { ProxiesState } from '../types/ProxiesState';
 
 export const removeLiteralProxy = (
@@ -8,7 +9,7 @@ export const removeLiteralProxy = (
 ) => {
   const { stringLiterals } = state;
 
-  const property = path.get('property');
+  const property = path.get(PathKey.Property);
   if (!property.isStringLiteral()) return false;
   const propertyName = property.node.value;
 

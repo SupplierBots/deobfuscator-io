@@ -2,12 +2,14 @@ import { NodePath } from '@babel/traverse';
 import { Identifier, MemberExpression } from '@babel/types';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { ArrayEncryption } from '../types/ArrayEncryption';
+import { PathKey } from '@core/types/PathKey';
+import { PathListKey } from '@core/types/PathListKey';
 
 export const parseArrayFunctions = (
   path: NodePath<MemberExpression>,
   state: ObfuscatedStringsState,
 ) => {
-  const object = path.get('object');
+  const object = path.get(PathKey.Object);
 
   const declaration = path
     .find(
@@ -22,12 +24,12 @@ export const parseArrayFunctions = (
   let id: NodePath<Identifier>;
 
   if (declaration.isFunctionDeclaration()) {
-    const declarationId = declaration.get('id');
+    const declarationId = declaration.get(PathKey.Id);
     if (!declarationId.isIdentifier()) return;
     id = declarationId;
   } else if (declaration.isVariableDeclaration()) {
-    const [declarator] = declaration.get('declarations');
-    const declaratorId = declarator.get('id');
+    const [declarator] = declaration.get(PathListKey.Declarations);
+    const declaratorId = declarator.get(PathKey.Id);
     if (!declaratorId.isIdentifier()) return;
     id = declaratorId;
   } else {
@@ -38,11 +40,11 @@ export const parseArrayFunctions = (
   if (!statement) return;
   const previousPath = statement.getPrevSibling();
   if (!previousPath.isExpressionStatement()) return;
-  const expression = previousPath.get('expression');
+  const expression = previousPath.get(PathKey.Expression);
   if (!expression.isAssignmentExpression()) return;
-  const assignmentRight = expression.get('right');
+  const assignmentRight = expression.get(PathKey.Right);
   if (!assignmentRight.isBinaryExpression()) return;
-  const binaryRight = assignmentRight.get('right');
+  const binaryRight = assignmentRight.get(PathKey.Right);
   if (
     !binaryRight.isUnaryExpression({ operator: '-' }) &&
     !binaryRight.isNumericLiteral()
@@ -68,8 +70,8 @@ export const parseArrayFunctions = (
       },
       BinaryExpression(path, encryption) {
         if (path.node.operator !== '<') return;
-        if (path.key !== 'test') return;
-        const right = path.get('right');
+        if (path.key !== PathKey.Test) return;
+        const right = path.get(PathKey.Right);
         if (!right.isNumericLiteral({ value: 256 })) return;
         encryption.name = 'rc4';
       },

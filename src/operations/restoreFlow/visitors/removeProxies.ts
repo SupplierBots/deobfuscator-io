@@ -7,6 +7,8 @@ import { ProxiesState } from '../types/ProxiesState';
 import { removeCallProxy } from '../helpers/removeCallProxy';
 import { removeLiteralProxy } from '../helpers/removeLiteralProxy';
 import { markDeadReference } from '../helpers/markDeadReference';
+import { PathKey } from '@core/types/PathKey';
+import { PathListKey } from '@core/types/PathListKey';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';
 
@@ -28,7 +30,7 @@ export const REMOVE_PROXIES: Visitor = {
         const parent = binding.path.parentPath;
         if (!parent.isVariableDeclaration()) continue;
 
-        const init = binding.path.get('init');
+        const init = binding.path.get(PathKey.Init);
         if (!init.isObjectExpression()) continue;
 
         const scopeUid: number = (binding.scope as ExtendedScope).uid;
@@ -47,12 +49,12 @@ export const REMOVE_PROXIES: Visitor = {
           scopeUid,
         };
 
-        const properties = init.get('properties');
+        const properties = init.get(PathListKey.Properties);
         if (
           properties.length === 0 ||
           !properties.every((p) => {
             if (!p.isObjectProperty()) return false;
-            const key = p.get('key');
+            const key = p.get(PathKey.Key);
             let keyValue: string | null = null;
             if (key.isStringLiteral()) {
               keyValue = key.node.value;
@@ -63,7 +65,7 @@ export const REMOVE_PROXIES: Visitor = {
             if (!keyValue || keyValue.length !== 5) return false;
             state.keys.push(keyValue);
 
-            const propertyValue = p.get('value');
+            const propertyValue = p.get(PathKey.Value);
             propertyValue.scope.crawl();
 
             if (propertyValue.isStringLiteral()) {
@@ -93,16 +95,16 @@ export const REMOVE_PROXIES: Visitor = {
                 const [paramRef] = functionBinding.referencePaths;
 
                 if (paramRef.parentPath?.isBinary()) {
-                  if (paramRef.key === 'left') {
+                  if (paramRef.key === PathKey.Left) {
                     proxy.left = functionBinding.path.key as number;
-                  } else if (paramRef.key === 'right') {
+                  } else if (paramRef.key === PathKey.Right) {
                     proxy.right = functionBinding.path.key as number;
                   }
                   proxy.operator = paramRef.parentPath.node.operator;
                 }
 
                 if (paramRef.parentPath?.isCallExpression()) {
-                  if (paramRef.key === 'callee') {
+                  if (paramRef.key === PathKey.Callee) {
                     callProxy.callee = functionBinding.path.key as number;
                   } else if (typeof paramRef.key === 'number') {
                     callProxy.params.push({
@@ -140,7 +142,7 @@ export const REMOVE_PROXIES: Visitor = {
             continue;
           }
 
-          const property = refExpression.get('property');
+          const property = refExpression.get(PathKey.Property);
           if (!property.isStringLiteral() && !property.isIdentifier()) {
             markDeadReference(ref, state);
             path.scope.crawl();
@@ -153,7 +155,7 @@ export const REMOVE_PROXIES: Visitor = {
             markDeadReference(ref, state);
             isRemoved = true;
           } else if (
-            refExpression.key === 'callee' &&
+            refExpression.key === PathKey.Callee &&
             refExpression.parentPath.isCallExpression()
           ) {
             isRemoved =

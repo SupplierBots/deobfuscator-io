@@ -1,12 +1,14 @@
 import { NodePath, Visitor } from '@babel/traverse';
-import { NewExpression, StringLiteral } from '@babel/types';
+import { NewExpression } from '@babel/types';
+import { PathKey } from '@core/types/PathKey';
+import { PathListKey } from '@core/types/PathListKey';
 import { removeCustomCodeCall } from '../handlers/removeCustomCodeCall';
 
 export const REMOVE_DOMAIN_LOCK: Visitor = {
   NewExpression(path: NodePath<NewExpression>) {
-    const callee = path.get('callee');
+    const callee = path.get(PathKey.Callee);
     if (!callee.isIdentifier({ name: 'RegExp' })) return;
-    const args = path.get('arguments');
+    const args = path.get(PathListKey.Arguments);
     if (args.length !== 2) return;
     const [pattern, flag] = args;
     if (!flag.isStringLiteral({ value: 'g' })) return;
@@ -18,15 +20,15 @@ export const REMOVE_DOMAIN_LOCK: Visitor = {
     const nextPath = statement.getNextSibling();
     if (!nextPath?.isVariableDeclaration()) return;
 
-    let matchString;
-    try {
-      matchString = (nextPath.get(
-        'declarations.0.init.callee.object.callee.object',
-      ) as NodePath<StringLiteral>).node.value;
-    } catch (ex) {
+    const matchLiteral = nextPath.getNested(
+      'declarations.0.init.callee.object.callee.object',
+    );
+
+    if (Array.isArray(matchLiteral) || !matchLiteral?.isStringLiteral()) {
       return;
     }
 
+    const matchString = matchLiteral.node.value;
     const trimmedPattern = patternValue.slice(1, -1);
     let matchingChars = '';
     let i = 0;

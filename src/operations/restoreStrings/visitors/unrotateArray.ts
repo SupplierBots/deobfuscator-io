@@ -1,5 +1,7 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { CallExpression, cloneDeepWithoutLoc } from '@babel/types';
+import { PathKey } from '@core/types/PathKey';
+import { PathListKey } from '@core/types/PathListKey';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { REPLACE_CALL_EXPRESSIONS } from './replaceCallExpressions';
 
@@ -9,9 +11,9 @@ export const UNROTATE_ARRAY: Visitor<ObfuscatedStringsState> = {
     state: ObfuscatedStringsState,
   ) {
     if (!state.stringArrayValues || !state.stringArrayIdentifier) return;
-    const callee = path.get('callee');
+    const callee = path.get(PathKey.Callee);
     if (!callee.isFunctionExpression()) return;
-    const [firstArgument, secondArgument] = path.get('arguments');
+    const [firstArgument, secondArgument] = path.get(PathListKey.Arguments);
     if (
       !firstArgument?.isIdentifier({
         name: state.stringArrayIdentifier.node.name,
@@ -28,12 +30,14 @@ export const UNROTATE_ARRAY: Visitor<ObfuscatedStringsState> = {
         TryStatement(path, state) {
           isSimpleRotate = false;
 
-          const tryBlock = path.get('block');
+          const tryBlock = path.get(PathKey.Block);
           if (!tryBlock.isBlockStatement()) return;
-          const [declarationPath] = tryBlock.get('body');
+          const [declarationPath] = tryBlock.get(PathListKey.Body);
           if (!declarationPath.isVariableDeclaration()) return;
-          const [resultDeclarator] = declarationPath.get('declarations');
-          const init = resultDeclarator.get('init');
+          const [resultDeclarator] = declarationPath.get(
+            PathListKey.Declarations,
+          );
+          const init = resultDeclarator.get(PathKey.Init);
 
           if (!init.isExpression()) {
             throw new Error('Unexpected path in string rotation function');

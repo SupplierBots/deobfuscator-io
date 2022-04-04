@@ -1,5 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { Scopable } from '@babel/types';
+import { PathKey } from '@core/types/PathKey';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';
@@ -17,7 +18,7 @@ export const REMOVE_VARIABLE_WRAPPERS: Visitor<ObfuscatedStringsState> = {
         continue;
       const bindingPath = binding.path;
       if (!bindingPath.isVariableDeclarator()) continue;
-      const init = bindingPath.get('init');
+      const init = bindingPath.get(PathKey.Init);
       if (!init.isIdentifier()) continue;
       const arrayFunctionName = Object.keys(state.arrayFunctions).find(
         (f) => f === init.node.name,

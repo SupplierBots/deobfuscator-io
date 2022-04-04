@@ -7,22 +7,24 @@ import {
   Expression,
   logicalExpression,
 } from '@babel/types';
+import { PathKey } from '@core/types/PathKey';
+import { PathListKey } from '@core/types/PathListKey';
 import { ProxiesState } from '../types/ProxiesState';
 
 export const removeCallProxy = (
   path: NodePath<CallExpression>,
   state: ProxiesState,
 ) => {
-  const callee = path.get('callee');
+  const callee = path.get(PathKey.Callee);
   if (!callee.isMemberExpression()) return false;
 
   const { binaryProxies, callProxies } = state;
 
-  const property = callee.get('property');
+  const property = callee.get(PathKey.Property);
   if (!property.isStringLiteral()) return false;
 
   const propertyName = property.node.value;
-  const args = path.get('arguments');
+  const args = path.get(PathListKey.Arguments);
 
   if (propertyName in binaryProxies) {
     if (args.length !== 2) {
