@@ -27,21 +27,23 @@ import { obfuscate } from 'javascript-obfuscator';
     stringArrayEncoding: ['base64', 'rc4', 'none'],
     stringArrayIndexesType: ['hexadecimal-number'],
     rotateStringArray: true,
-    stringArrayRotate: true,
-    stringArrayShuffle: true,
     shuffleStringArray: true,
     stringArrayThreshold: 1,
     stringArrayIndexShift: true,
-    stringArrayWrappersType: 'function',
     stringArrayWrappersCount: 5,
     stringArrayWrappersChainedCalls: true,
-    stringArrayWrappersParametersMaxCount: 10,
     splitStrings: true,
     splitStringsChunkLength: 5,
     simplify: true,
     selfDefending: true,
     transformObjectKeys: true,
     unicodeEscapeSequence: false,
+    stringArrayWrappersType: 'function', //* >= 2.16.0
+    stringArrayWrappersParametersMaxCount: 10, //* >= 2.16.0
+    stringArrayRotate: true, //* >= 3.0.0
+    stringArrayShuffle: true, //* >= 3.0.0
+    stringArrayCallsTransform: true, //* >= 3.2.0
+    stringArrayCallsTransformThreshold: 1, //* >= 3.2.0
     target: 'browser',
     seed: 2137,
   });

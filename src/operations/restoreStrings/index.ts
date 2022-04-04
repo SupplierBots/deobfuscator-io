@@ -2,14 +2,15 @@ import { File } from '@babel/types';
 import { utils } from '../../core/utils';
 import { StringsDecoder } from './types/StringsDecoder';
 import { ObfuscatedStringsState } from './types/ObfuscatedStringsState';
+import { UNESCAPE_UNICODE_SEQUENCES } from './visitors/unescapeUnicodeSequences';
 import { SIMPLIFY_EXPRESSIONS } from './visitors/simplifyExpressions';
 import { FIND_STRING_ARRAY } from './visitors/findStringArray';
 import { REMOVE_FUNCTION_WRAPPERS } from './visitors/removeFunctionWrappers';
 import { REMOVE_VARIABLE_WRAPPERS } from './visitors/removeVariableWrappers';
 import { UNROTATE_ARRAY } from './visitors/unrotateArray';
-import { UNESCAPE_UNICODE_SEQUENCES } from './visitors/unescapeUnicodeSequences';
 import { REPLACE_CALL_EXPRESSIONS } from './visitors/replaceCallExpressions';
 import { findArrayGetters } from './handlers/findArrayGetters';
+import { REMOVE_GETTERS_ARGUMENTS_WRAPPERS } from './visitors/removeGettersArgumentsWrappers';
 
 export const restoreStrings = (ast: File) => {
   const state: ObfuscatedStringsState = {
@@ -19,6 +20,7 @@ export const restoreStrings = (ast: File) => {
   utils.runVisitors(
     ast,
     state,
+    REMOVE_GETTERS_ARGUMENTS_WRAPPERS,
     SIMPLIFY_EXPRESSIONS, //* Evaluate numeric expressions
     UNESCAPE_UNICODE_SEQUENCES,
     FIND_STRING_ARRAY,
