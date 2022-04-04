@@ -15,6 +15,7 @@ export const REMOVE_SELF_DEFENDING: Visitor = {
       return;
     const parent = path.parentPath;
     if (!parent.isCallExpression()) return;
+    if (parent.parentPath.isReturnStatement()) return;
     const callee = parent.get(PathKey.Callee);
     if (!callee.isMemberExpression()) return;
     const property = callee.get(PathKey.Property);
@@ -35,7 +36,6 @@ export const REMOVE_SELF_DEFENDING: Visitor = {
       return argument.isCallExpression();
     });
     if (!functionExpression?.isFunctionParent()) {
-      console.log('no fn parent');
       return;
     }
     removeCustomCodeCall(functionExpression);

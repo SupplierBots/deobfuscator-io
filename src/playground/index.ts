@@ -27,6 +27,8 @@ import { obfuscate } from 'javascript-obfuscator';
     stringArrayEncoding: ['base64', 'rc4', 'none'],
     stringArrayIndexesType: ['hexadecimal-number'],
     rotateStringArray: true,
+    stringArrayRotate: true,
+    stringArrayShuffle: true,
     shuffleStringArray: true,
     stringArrayThreshold: 1,
     stringArrayIndexShift: true,
@@ -37,12 +39,13 @@ import { obfuscate } from 'javascript-obfuscator';
     splitStrings: true,
     splitStringsChunkLength: 5,
     simplify: true,
-    selfDefending: false,
+    selfDefending: true,
     transformObjectKeys: true,
     unicodeEscapeSequence: false,
     target: 'browser',
     seed: 2137,
   });
+
   await fs.writeFile(
     path.resolve(__dirname, 'files', 'output.js'),
     obfuscationResult.getObfuscatedCode(),

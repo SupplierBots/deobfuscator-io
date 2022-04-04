@@ -39,5 +39,6 @@ export const removeCustomCodeCall = (path: NodePath<FunctionParent>) => {
     expression.getStatementParent()?.remove();
     return;
   }
+  console.log(statement.toString());
   throw new Error(`Unexpected custom code call type: ${statement.type}`);
 };
