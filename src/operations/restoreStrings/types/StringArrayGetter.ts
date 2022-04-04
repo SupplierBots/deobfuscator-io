@@ -6,7 +6,7 @@ import {
 } from '@babel/types';
 import { ArrayEncryption } from './ArrayEncryption';
 
-export interface StringArrayFunction {
+export interface StringArrayGetter {
   encryption: ArrayEncryption;
   declaration: NodePath<FunctionDeclaration | VariableDeclaration>;
   identifier: NodePath<Identifier>;

@@ -59,7 +59,7 @@ export const REMOVE_FUNCTION_WRAPPERS: Visitor<ObfuscatedStringsState> = {
       const callee = returnArgument.get(PathKey.Callee);
       if (!callee.isIdentifier()) continue;
 
-      const originalFunctionName = Object.keys(state.arrayFunctions).find(
+      const originalFunctionName = Object.keys(state.getters).find(
         (f) => f === callee.node.name,
       );
       if (!originalFunctionName) continue;

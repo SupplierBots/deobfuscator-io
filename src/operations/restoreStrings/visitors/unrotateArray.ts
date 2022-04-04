@@ -10,13 +10,13 @@ export const UNROTATE_ARRAY: Visitor<ObfuscatedStringsState> = {
     path: NodePath<CallExpression>,
     state: ObfuscatedStringsState,
   ) {
-    if (!state.stringArrayValues || !state.stringArrayIdentifier) return;
+    if (!state.arrayValues || !state.arrayIdentifier) return;
     const callee = path.get(PathKey.Callee);
     if (!callee.isFunctionExpression()) return;
     const [firstArgument, secondArgument] = path.get(PathListKey.Arguments);
     if (
       !firstArgument?.isIdentifier({
-        name: state.stringArrayIdentifier.node.name,
+        name: state.arrayIdentifier.node.name,
       })
     )
       return;

@@ -8,12 +8,12 @@ import { REMOVE_FUNCTION_WRAPPERS } from './visitors/removeFunctionWrappers';
 import { REMOVE_VARIABLE_WRAPPERS } from './visitors/removeVariableWrappers';
 import { UNROTATE_ARRAY } from './visitors/unrotateArray';
 import { UNESCAPE_UNICODE_SEQUENCES } from './visitors/unescapeUnicodeSequences';
-import { parseArrayFunctions } from './helpers/parseArrayFunctions';
 import { REPLACE_CALL_EXPRESSIONS } from './visitors/replaceCallExpressions';
+import { findArrayGetters } from './handlers/findArrayGetters';
 
 export const restoreStrings = (ast: File) => {
   const state: ObfuscatedStringsState = {
-    arrayFunctions: {},
+    getters: {},
   };
 
   utils.runVisitors(
@@ -24,20 +24,13 @@ export const restoreStrings = (ast: File) => {
     FIND_STRING_ARRAY,
   );
 
-  if (!state.stringArrayValues) {
+  if (!state.arrayValues) {
     console.warn('String array values not found!');
     return ast;
   }
-  state.stringArrayBinding?.referencePaths.forEach((ref) => {
-    const expression = ref.findParent((p) => p.isMemberExpression());
-    if (!expression?.isMemberExpression()) return;
-    parseArrayFunctions(expression, state);
-  });
 
-  state.decoder = new StringsDecoder(
-    state.stringArrayValues,
-    state.arrayFunctions,
-  );
+  findArrayGetters(state);
+  state.decoder = new StringsDecoder(state.arrayValues, state.getters);
 
   utils.runVisitors(
     ast,
@@ -51,8 +44,8 @@ export const restoreStrings = (ast: File) => {
   );
 
   //* Remove wrappers & string array
-  Object.values(state.arrayFunctions).forEach((fn) => fn.declaration.remove());
-  state.stringArrayIdentifier?.getStatementParent()?.remove();
+  Object.values(state.getters).forEach((fn) => fn.declaration.remove());
+  state.arrayDeclaration?.remove();
 
   return ast;
 };

@@ -1,4 +1,4 @@
-import { StringArrayFunction } from './StringArrayFunction';
+import { StringArrayGetter } from './StringArrayGetter';
 
 type RC4Decoder = (index: number, key: string) => string;
 type Base64Decoder = (index: number) => string;
@@ -9,7 +9,7 @@ export class StringsDecoder {
   } = {};
   constructor(
     private readonly array: string[],
-    arrayFunctions: { [key: string]: StringArrayFunction },
+    arrayFunctions: { [key: string]: StringArrayGetter },
   ) {
     for (const [name, arrayFunction] of Object.entries(arrayFunctions)) {
       switch (arrayFunction.encryption) {

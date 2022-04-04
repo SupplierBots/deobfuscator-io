@@ -1,12 +1,17 @@
 import { Binding, NodePath } from '@babel/traverse';
-import { Identifier } from '@babel/types';
+import {
+  FunctionDeclaration,
+  Identifier,
+  VariableDeclaration,
+} from '@babel/types';
 import { StringsDecoder } from './StringsDecoder';
-import { StringArrayFunction } from './StringArrayFunction';
+import { StringArrayGetter } from './StringArrayGetter';
 
 export interface ObfuscatedStringsState {
-  stringArrayIdentifier?: NodePath<Identifier>;
-  stringArrayBinding?: Binding;
-  stringArrayValues?: string[];
-  arrayFunctions: { [key: string]: StringArrayFunction };
+  arrayDeclaration?: NodePath<VariableDeclaration | FunctionDeclaration>;
+  arrayIdentifier?: NodePath<Identifier>;
+  arrayBinding?: Binding;
+  arrayValues?: string[];
+  getters: { [key: string]: StringArrayGetter };
   decoder?: StringsDecoder;
 }

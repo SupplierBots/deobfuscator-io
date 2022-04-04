@@ -5,7 +5,7 @@ import { ArrayEncryption } from '../types/ArrayEncryption';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
 
-export const parseArrayFunctions = (
+export const parseArrayGetter = (
   path: NodePath<MemberExpression>,
   state: ObfuscatedStringsState,
 ) => {
@@ -80,7 +80,7 @@ export const parseArrayFunctions = (
   );
   const offset = parseInt(binaryRight.toString());
 
-  state.arrayFunctions[id.node.name] = {
+  state.getters[id.node.name] = {
     offset,
     declaration,
     identifier: id,

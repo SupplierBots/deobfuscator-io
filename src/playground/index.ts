@@ -6,6 +6,7 @@ import { obfuscate } from 'javascript-obfuscator';
     path.resolve(__dirname, 'files', 'input.js'),
     { encoding: 'utf-8' },
   );
+
   const obfuscationResult = obfuscate(input, {
     compact: false,
     controlFlowFlattening: true,
@@ -17,7 +18,7 @@ import { obfuscate } from 'javascript-obfuscator';
     disableConsoleOutput: true,
     domainLock: ['test.com'],
     domainLockRedirectUrl: 'about:blank',
-    identifierNamesGenerator: 'mangled-shuffled',
+    identifierNamesGenerator: 'hexadecimal',
     numbersToExpressions: true,
     renameGlobals: false,
     renameProperties: false,
@@ -36,7 +37,7 @@ import { obfuscate } from 'javascript-obfuscator';
     splitStrings: true,
     splitStringsChunkLength: 5,
     simplify: true,
-    selfDefending: true,
+    selfDefending: false,
     transformObjectKeys: true,
     unicodeEscapeSequence: false,
     target: 'browser',

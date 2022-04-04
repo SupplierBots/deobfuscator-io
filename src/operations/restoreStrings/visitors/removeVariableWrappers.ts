@@ -20,7 +20,7 @@ export const REMOVE_VARIABLE_WRAPPERS: Visitor<ObfuscatedStringsState> = {
       if (!bindingPath.isVariableDeclarator()) continue;
       const init = bindingPath.get(PathKey.Init);
       if (!init.isIdentifier()) continue;
-      const arrayFunctionName = Object.keys(state.arrayFunctions).find(
+      const arrayFunctionName = Object.keys(state.getters).find(
         (f) => f === init.node.name,
       );
       if (!arrayFunctionName) continue;
