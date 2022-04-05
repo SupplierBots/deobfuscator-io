@@ -7,6 +7,7 @@ export const RENAME_IDENTIFIERS: Visitor = {
     const parent = path.parentPath;
     if (parent && parent.isFunctionParent()) return;
 
+    path.scope.crawl();
     for (const [name, binding] of Object.entries(path.scope.bindings)) {
       const trimmedName = name.replace('_0x', '');
       if ((binding.kind as string) === 'param') {
