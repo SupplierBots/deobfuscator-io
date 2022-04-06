@@ -50,8 +50,8 @@ export const REMOVE_PROXIES: Visitor = {
         };
 
         const properties = init.get(PathListKey.Properties);
+        if (properties.length === 0) continue;
         if (
-          properties.length === 0 ||
           !properties.every((p) => {
             if (!p.isObjectProperty()) return false;
             const key = p.get(PathKey.Key);
@@ -62,7 +62,8 @@ export const REMOVE_PROXIES: Visitor = {
             if (key.isIdentifier()) {
               keyValue = key.node.name;
             }
-            if (!keyValue || keyValue.length !== 5) return false;
+            if (!keyValue) return false;
+
             state.keys.push(keyValue);
 
             const propertyValue = p.get(PathKey.Value);

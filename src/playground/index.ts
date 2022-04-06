@@ -21,7 +21,7 @@ import { obfuscate } from 'javascript-obfuscator';
     identifierNamesGenerator: 'hexadecimal',
     numbersToExpressions: true,
     renameGlobals: false,
-    renameProperties: false,
+    renameProperties: true,
     renamePropertiesMode: 'safe',
     stringArray: true,
     stringArrayEncoding: ['base64', 'rc4', 'none'],
