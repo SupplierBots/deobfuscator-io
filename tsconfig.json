@@ -1,11 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
-    "paths": {
-      "@core/*": [
-        "core/*"
-      ],
-    },
+    "baseUrl": ".",
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
@@ -14,13 +9,19 @@
     "outDir": "dist",
     "noImplicitAny": true,
     "strict": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "isolatedModules": true,
+    "paths": {
+      "@core/*": [
+        "./src/core/*"
+      ],
+      "@operations/*": [
+        "./src/operations/*"
+      ]
+    }
   },
   "lib": [
     "es2015"
   ],
-  "ts-node": {
-    "require": [
-      "tsconfig-paths/register"
-    ]
-  }
 }

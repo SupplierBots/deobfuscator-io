@@ -1,5 +1,5 @@
 import { File } from '@babel/types';
-import { utils } from '../../core/utils';
+import { traverseUtils } from '../../core/traverseUtils';
 
 import { REMOVE_SINGLE_CALL_CONTROLLERS } from './visitors/removeSingleCallControllers';
 import { REMOVE_DOMAIN_LOCK } from './visitors/removeDomainLock';
@@ -8,7 +8,7 @@ import { REMOVE_CONSOLE_HOOK } from '../removeCustomCode/visitors/removeConsoleH
 import { REMOVE_SELF_DEFENDING } from './visitors/removeSelfDefending';
 
 export const removeCustomCode = (ast: File) => {
-  utils.runVisitors(
+  traverseUtils.runVisitors(
     ast,
     {}, //* Empty state
     REMOVE_SINGLE_CALL_CONTROLLERS,

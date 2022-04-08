@@ -1,5 +1,7 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { CallExpression, stringLiteral } from '@babel/types';
+import { findBinding } from '@core/pathExtensions';
+import { ExtendedScope } from '@core/types/ExtendedScope';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
@@ -28,14 +30,18 @@ export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
     const [first, second] = path.get(PathListKey.Arguments);
 
     if (!first.isStringLiteral() && !first.isNumericLiteral()) {
-      const bindingUid = path.findBinding(callee.node.name)?.scope.getUid();
-      if (bindingUid !== state.arrayBinding?.scope.getUid()) return;
+      const bindingUid = (findBinding(path, callee.node.name)
+        ?.scope as ExtendedScope).uid;
+      if (bindingUid !== (state.arrayBinding?.scope as ExtendedScope).uid)
+        return;
       throw new Error("Unexpected first array function's argument");
     }
 
     if (second && !second.isStringLiteral() && !second.isNumericLiteral()) {
-      const bindingUid = path.findBinding(callee.node.name)?.scope.getUid();
-      if (bindingUid !== state.arrayBinding?.scope.getUid()) return;
+      const bindingUid = (findBinding(path, callee.node.name)
+        ?.scope as ExtendedScope).uid;
+      if (bindingUid !== (state.arrayBinding?.scope as ExtendedScope).uid)
+        return;
       throw new Error("Unexpected second array function's argument");
     }
 

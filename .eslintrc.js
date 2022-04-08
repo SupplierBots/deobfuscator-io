@@ -21,7 +21,10 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      typescript: {},
+      node: {
+        paths: ['./'],
+      },
+      'babel-module': {},
     },
   },
   plugins: ['import'],

@@ -1,5 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { NewExpression } from '@babel/types';
+import { getNested } from '@core/pathExtensions';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
 import { removeCustomCodeCall } from '../handlers/removeCustomCodeCall';
@@ -20,7 +21,8 @@ export const REMOVE_DOMAIN_LOCK: Visitor = {
     const nextPath = statement.getNextSibling();
     if (!nextPath?.isVariableDeclaration()) return;
 
-    const matchLiteral = nextPath.getNested(
+    const matchLiteral = getNested(
+      nextPath,
       'declarations.0.init.callee.object.callee.object',
     );
 

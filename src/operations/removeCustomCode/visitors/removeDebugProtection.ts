@@ -1,5 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { NewExpression } from '@babel/types';
+import { findBinding, getNested } from '@core/pathExtensions';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
 import { removeCustomCodeCall } from '../handlers/removeCustomCodeCall';
@@ -29,12 +30,12 @@ export const REMOVE_DEBUG_PROTECTION: Visitor = {
     const debugLoopId = init.get(PathKey.Callee);
     if (!debugLoopId.isIdentifier()) return;
     const debugLoopName = debugLoopId.node.name;
-    const debugLoopBinding = path.findBinding(debugLoopName);
+    const debugLoopBinding = findBinding(path, debugLoopName);
     if (!debugLoopBinding) return;
     debugLoopBinding.referencePaths.forEach((ref) => {
       if (!ref.parentPath?.isCallExpression()) return;
       if (ref.key === 0) {
-        const id = ref.parentPath?.getNested('callee.property');
+        const id = getNested(ref.parentPath, 'callee.property');
         if (
           !Array.isArray(id) &&
           id?.isIdentifier() &&

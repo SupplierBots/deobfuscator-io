@@ -1,5 +1,5 @@
 import { File } from '@babel/types';
-import { utils } from '../../core/utils';
+import { traverseUtils } from '../../core/traverseUtils';
 import { StringsDecoder } from './types/StringsDecoder';
 import { ObfuscatedStringsState } from './types/ObfuscatedStringsState';
 import { UNESCAPE_UNICODE_SEQUENCES } from './visitors/unescapeUnicodeSequences';
@@ -17,7 +17,7 @@ export const restoreStrings = (ast: File) => {
     getters: {},
   };
 
-  utils.runVisitors(
+  traverseUtils.runVisitors(
     ast,
     state,
     REMOVE_GETTERS_ARGUMENTS_WRAPPERS,
@@ -34,7 +34,7 @@ export const restoreStrings = (ast: File) => {
   findArrayGetters(state);
   state.decoder = new StringsDecoder(state.arrayValues, state.getters);
 
-  utils.runVisitors(
+  traverseUtils.runVisitors(
     ast,
     state,
     REMOVE_VARIABLE_WRAPPERS,

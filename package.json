@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "start": "node -r ts-node/register --max-old-space-size=8192 src/index.ts",
     "prettier": "prettier 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",
-    "playground": "ts-node src/playground/index.ts"
+    "build:types": "tsc && tsc-alias -p tsconfig.json",
+    "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
+    "build": "yarn build:types && yarn build:js"
   },
   "husky": {
     "hooks": {
@@ -21,31 +27,34 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.14.8",
-    "@babel/generator": "^7.13.16",
-    "@babel/parser": "^7.14.8",
-    "@babel/traverse": "^7.14.5",
-    "@babel/types": "^7.13.17",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
     "@types/babel__core": "^7.1.14",
     "@types/babel__generator": "^7.6.2",
-    "@types/jsdom": "^16.2.10",
     "@types/node": "^14.14.41",
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.22.0",
+    "babel-plugin-module-resolver": "^4.1.0",
     "eslint": "7.25.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-import-resolver-typescript": "^2.7.0",
+    "eslint-import-resolver-babel-module": "^5.3.1",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.4.0",
     "husky": "6.0.0",
-    "javascript-obfuscator": "3.2.5",
     "lint-staged": "10.5.4",
     "prettier": "2.2.1",
     "ts-node": "^10.1.0",
-    "tsconfig-paths": "^3.14.1",
+    "tsc-alias": "^1.6.6",
     "typescript": "4.4.0-beta"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.14.8",
+    "@babel/generator": "^7.13.16",
+    "@babel/parser": "^7.14.8",
+    "@babel/traverse": "^7.14.5",
+    "@babel/types": "^7.13.17"
+  }
 }

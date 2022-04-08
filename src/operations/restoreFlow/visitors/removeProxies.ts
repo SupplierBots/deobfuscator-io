@@ -9,6 +9,7 @@ import { removeLiteralProxy } from '../helpers/removeLiteralProxy';
 import { markDeadReference } from '../helpers/markDeadReference';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
+import { getValue } from '@core/pathExtensions';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';
 
@@ -150,7 +151,7 @@ export const REMOVE_PROXIES: Visitor = {
             continue;
           }
 
-          const propertyValue = property.getValue();
+          const propertyValue = getValue(property);
           let isRemoved = false;
           if (!state.keys.includes(propertyValue)) {
             markDeadReference(ref, state);
