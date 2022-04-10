@@ -1,10 +1,12 @@
 import * as parser from '@babel/parser';
 import generate from '@babel/generator';
 
-import { restoreStrings } from '@operations/restoreStrings';
-import { restoreFlow } from '@operations/restoreFlow';
-import { cleanup } from '@operations/cleanup';
-import { removeCustomCode } from '@operations/removeCustomCode';
+import {
+  restoreStrings,
+  restoreFlow,
+  cleanup,
+  removeCustomCode,
+} from 'operations';
 import { ASTOperation } from './types/ASTOperation';
 import { File } from '@babel/types';
 

@@ -7,9 +7,8 @@ import { ProxiesState } from '../types/ProxiesState';
 import { removeCallProxy } from '../handlers/removeCallProxy';
 import { removeLiteralProxy } from '../handlers/removeLiteralProxy';
 import { markDeadReference } from '../handlers/markDeadReference';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
-import { pathUtils } from '@core/pathUtils';
+import { PathKey, PathListKey } from 'core/types';
+import { pathUtils } from 'core';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';
 

@@ -1,7 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { cloneDeepWithoutLoc, Node, StringLiteral } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathKey, PathListKey } from 'core/types';
 
 export const REMOVE_SWITCH_STATEMENTS: Visitor = {
   StringLiteral: {

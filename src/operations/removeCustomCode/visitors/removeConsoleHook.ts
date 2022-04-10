@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { ArrayExpression } from '@babel/types';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathListKey } from 'core/types';
 import { removeCustomCodeCall } from '../handlers/removeCustomCodeCall';
 
 export const REMOVE_CONSOLE_HOOK: Visitor = {

@@ -1,5 +1,5 @@
 import { File } from '@babel/types';
-import { traverseUtils } from '../../core/traverseUtils';
+import { traverseUtils } from 'core';
 import { ADD_MISSING_BLOCK_STATEMENTS } from './visitors/addMissingBlockStatements';
 import { RENAME_IDENTIFIERS } from './visitors/renameIdentifiers';
 import { RESTORE_DOT_NOTATION } from './visitors/restoreDotNotation';

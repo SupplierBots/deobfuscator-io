@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "module": "commonjs",
     "esModuleInterop": true,
     "target": "es6",
@@ -12,14 +12,6 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "isolatedModules": true,
-    "paths": {
-      "@core/*": [
-        "./src/core/*"
-      ],
-      "@operations/*": [
-        "./src/operations/*"
-      ]
-    }
   },
   "lib": [
     "es2015"

@@ -7,8 +7,7 @@ import {
   Expression,
   logicalExpression,
 } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathKey, PathListKey } from 'core/types';
 import { ProxiesState } from '../types/ProxiesState';
 
 export const removeCallProxy = (

@@ -2,8 +2,7 @@ import { NodePath } from '@babel/traverse';
 import { Identifier, MemberExpression } from '@babel/types';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { ArrayEncryption } from '../types/ArrayEncryption';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathKey, PathListKey } from 'core/types';
 
 export const parseArrayGetter = (
   path: NodePath<MemberExpression>,

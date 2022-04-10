@@ -1,5 +1,5 @@
 import { File } from '@babel/types';
-import { traverseUtils } from '../../core/traverseUtils';
+import { traverseUtils } from 'core';
 import { StringsDecoder } from './types/StringsDecoder';
 import { ObfuscatedStringsState } from './types/ObfuscatedStringsState';
 import { UNESCAPE_UNICODE_SEQUENCES } from './visitors/unescapeUnicodeSequences';

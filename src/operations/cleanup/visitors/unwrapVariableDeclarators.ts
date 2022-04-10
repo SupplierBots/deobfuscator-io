@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { variableDeclaration, VariableDeclaration } from '@babel/types';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathListKey } from 'core/types';
 
 export const UNWRAP_VARIABLE_DECLARATORS: Visitor = {
   VariableDeclaration: function (path: NodePath<VariableDeclaration>) {

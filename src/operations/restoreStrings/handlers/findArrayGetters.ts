@@ -1,5 +1,5 @@
-import { pathUtils } from '@core/pathUtils';
-import { PathKey } from '@core/types/PathKey';
+import { pathUtils } from 'core';
+import { PathKey } from 'core/types';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { parseArrayGetter } from './parseArrayGetter';
 

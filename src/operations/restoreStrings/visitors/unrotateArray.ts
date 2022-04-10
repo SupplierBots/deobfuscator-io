@@ -1,7 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { CallExpression, cloneDeepWithoutLoc } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathKey, PathListKey } from 'core/types';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { REPLACE_CALL_EXPRESSIONS } from './replaceCallExpressions';
 

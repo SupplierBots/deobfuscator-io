@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { Scopable } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
+import { PathKey } from 'core/types';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
 type BindingKind = 'var' | 'let' | 'const' | 'hoisted' | 'param';

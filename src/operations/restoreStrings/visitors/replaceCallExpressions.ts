@@ -1,9 +1,7 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { CallExpression, stringLiteral } from '@babel/types';
-import { pathUtils } from '@core/pathUtils';
-import { ExtendedScope } from '@core/types/ExtendedScope';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { pathUtils } from 'core';
+import { PathKey, PathListKey, ExtendedScope } from 'core/types';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 
 export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {

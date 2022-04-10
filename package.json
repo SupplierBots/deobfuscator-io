@@ -11,9 +11,10 @@
     "start": "node -r ts-node/register --max-old-space-size=8192 src/index.ts",
     "prettier": "prettier 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",
-    "build:types": "tsc && tsc-alias -p tsconfig.json",
+    "build:types": "tsc",
     "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline",
-    "build": "yarn build:types && yarn build:js"
+    "build": "yarn build:types && yarn build:js",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {
@@ -46,7 +47,6 @@
     "lint-staged": "10.5.4",
     "prettier": "2.2.1",
     "ts-node": "^10.1.0",
-    "tsc-alias": "^1.6.6",
     "typescript": "4.4.0-beta"
   },
   "dependencies": {

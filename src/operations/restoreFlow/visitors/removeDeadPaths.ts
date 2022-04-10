@@ -4,8 +4,7 @@ import {
   Conditional,
   expressionStatement,
 } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathKey, PathListKey } from 'core/types';
 
 export const REMOVE_DEAD_PATHS: Visitor = {
   Conditional: function (path: NodePath<Conditional>) {

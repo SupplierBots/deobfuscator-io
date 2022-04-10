@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { Scopable } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
+import { PathKey } from 'core/types';
 
 export const RENAME_IDENTIFIERS: Visitor = {
   Scopable(path: NodePath<Scopable>) {

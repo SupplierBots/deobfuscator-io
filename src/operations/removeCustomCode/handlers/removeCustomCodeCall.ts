@@ -1,7 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import { FunctionParent, isNodesEquivalent } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathKey, PathListKey } from 'core/types';
 
 export const removeCustomCodeCall = (path: NodePath<FunctionParent>) => {
   const statement = path.getStatementParent();

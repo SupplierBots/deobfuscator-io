@@ -13,16 +13,8 @@
           ".ts"
         ],
         "root": [
-          "./"
-        ],
-        "alias": {
-          "@core": [
-            "./src/core"
-          ],
-          "@operations": [
-            "./src/operations"
-          ]
-        }
+          "./src"
+        ]
       }
     ]
   ]

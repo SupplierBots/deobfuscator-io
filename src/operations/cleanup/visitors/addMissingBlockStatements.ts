@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { blockStatement, IfStatement } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
+import { PathKey } from 'core/types';
 
 export const ADD_MISSING_BLOCK_STATEMENTS: Visitor = {
   IfStatement: function (path: NodePath<IfStatement>) {

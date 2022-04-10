@@ -1,2 +1,2 @@
-import { Deobfuscator } from '@core/Deobfuscator';
+import { Deobfuscator } from 'core/Deobfuscator';
 export { Deobfuscator };

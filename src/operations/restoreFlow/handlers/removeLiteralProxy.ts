@@ -1,6 +1,6 @@
 import { NodePath } from '@babel/traverse';
 import { MemberExpression, stringLiteral } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
+import { PathKey } from 'core/types';
 import { ProxiesState } from '../types/ProxiesState';
 
 export const removeLiteralProxy = (

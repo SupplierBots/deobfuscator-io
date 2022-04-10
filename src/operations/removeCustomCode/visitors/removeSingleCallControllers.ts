@@ -1,8 +1,7 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { ConditionalExpression } from '@babel/types';
-import { pathUtils } from '@core/pathUtils';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { pathUtils } from 'core';
+import { PathKey, PathListKey } from 'core/types';
 
 export const REMOVE_SINGLE_CALL_CONTROLLERS: Visitor = {
   ConditionalExpression(path: NodePath<ConditionalExpression>) {

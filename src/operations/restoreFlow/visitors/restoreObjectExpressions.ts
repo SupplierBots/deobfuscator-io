@@ -8,8 +8,7 @@ import {
   objectProperty,
   Scopable,
 } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathKey, PathListKey } from 'core/types';
 
 export const RESTORE_OBJECT_EXPRESSIONS: Visitor = {
   Scopable: function (path: NodePath<Scopable>) {

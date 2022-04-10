@@ -7,8 +7,7 @@ import {
   returnStatement,
   SequenceExpression,
 } from '@babel/types';
-import { PathKey } from '@core/types/PathKey';
-import { PathListKey } from '@core/types/PathListKey';
+import { PathKey, PathListKey } from 'core/types';
 
 export const UNWRAP_EXPRESSIONS: Visitor = {
   LogicalExpression: function (path: NodePath<LogicalExpression>) {
