@@ -1,4 +1,4 @@
-import { findBinding } from '@core/pathExtensions';
+import { pathUtils } from '@core/pathUtils';
 import { PathKey } from '@core/types/PathKey';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
 import { parseArrayGetter } from './parseArrayGetter';
@@ -18,7 +18,7 @@ export const findArrayGetters = (state: ObfuscatedStringsState) => {
     if (!declarator.isVariableDeclarator()) return;
     const aliasId = declarator.get(PathKey.Id);
     if (!aliasId.isIdentifier()) return;
-    const aliasBinding = findBinding(ref, aliasId.node.name);
+    const aliasBinding = pathUtils.findBinding(ref, aliasId.node.name);
     if (!aliasBinding) return;
     aliasBinding.referencePaths.forEach((aliasRef) => {
       const aliasRefParent = aliasRef.parentPath;

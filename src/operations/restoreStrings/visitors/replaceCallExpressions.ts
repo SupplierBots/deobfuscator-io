@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { CallExpression, stringLiteral } from '@babel/types';
-import { findBinding } from '@core/pathExtensions';
+import { pathUtils } from '@core/pathUtils';
 import { ExtendedScope } from '@core/types/ExtendedScope';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
@@ -30,7 +30,7 @@ export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
     const [first, second] = path.get(PathListKey.Arguments);
 
     if (!first.isStringLiteral() && !first.isNumericLiteral()) {
-      const bindingUid = (findBinding(path, callee.node.name)
+      const bindingUid = (pathUtils.findBinding(path, callee.node.name)
         ?.scope as ExtendedScope).uid;
       if (bindingUid !== (state.arrayBinding?.scope as ExtendedScope).uid)
         return;
@@ -38,7 +38,7 @@ export const REPLACE_CALL_EXPRESSIONS: Visitor<ObfuscatedStringsState> = {
     }
 
     if (second && !second.isStringLiteral() && !second.isNumericLiteral()) {
-      const bindingUid = (findBinding(path, callee.node.name)
+      const bindingUid = (pathUtils.findBinding(path, callee.node.name)
         ?.scope as ExtendedScope).uid;
       if (bindingUid !== (state.arrayBinding?.scope as ExtendedScope).uid)
         return;

@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { StringLiteral } from '@babel/types';
-import { getValue } from '@core/pathExtensions';
+import { pathUtils } from '@core/pathUtils';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
 import { removeCustomCodeCall } from '../handlers/removeCustomCodeCall';
@@ -21,7 +21,7 @@ export const REMOVE_SELF_DEFENDING: Visitor = {
     if (!callee.isMemberExpression()) return;
     const property = callee.get(PathKey.Property);
     if (!property.isStringLiteral() && !property.isIdentifier()) return;
-    const propertyValue = getValue(property);
+    const propertyValue = pathUtils.getValue(property);
     if (propertyValue !== selfDefendingVariants[value]) return;
     const functionExpression = path.findParent((p) => {
       if (!p.isFunctionExpression()) return false;

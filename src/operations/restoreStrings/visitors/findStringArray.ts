@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { ArrayExpression } from '@babel/types';
-import { findBinding } from '@core/pathExtensions';
+import { pathUtils } from '@core/pathUtils';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
@@ -38,7 +38,10 @@ export const FIND_STRING_ARRAY: Visitor<ObfuscatedStringsState> = {
       return;
     }
 
-    state.arrayBinding = findBinding(path, state.arrayIdentifier.node.name);
+    state.arrayBinding = pathUtils.findBinding(
+      path,
+      state.arrayIdentifier.node.name,
+    );
     state.arrayValues = elements
       .map((e) => {
         if (!e.isStringLiteral()) return '';

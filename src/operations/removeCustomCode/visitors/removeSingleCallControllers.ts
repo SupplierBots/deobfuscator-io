@@ -1,6 +1,6 @@
 import { NodePath, Visitor } from '@babel/traverse';
 import { ConditionalExpression } from '@babel/types';
-import { findBinding } from '@core/pathExtensions';
+import { pathUtils } from '@core/pathUtils';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
 
@@ -27,7 +27,7 @@ export const REMOVE_SINGLE_CALL_CONTROLLERS: Visitor = {
     const [declarator] = outerStatement.get(PathListKey.Declarations);
     const id = declarator.get(PathKey.Id);
     if (!id.isIdentifier()) return;
-    const binding = findBinding(path, id.node.name);
+    const binding = pathUtils.findBinding(path, id.node.name);
     if (!binding) return;
     binding.referencePaths.forEach((ref) => {
       if (ref.key !== PathKey.Callee) return;

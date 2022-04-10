@@ -5,7 +5,7 @@ import {
   ObjectExpression,
   StringLiteral,
 } from '@babel/types';
-import { findBinding } from '@core/pathExtensions';
+import { pathUtils } from '@core/pathUtils';
 import { PathKey } from '@core/types/PathKey';
 import { PathListKey } from '@core/types/PathListKey';
 import { ObfuscatedStringsState } from '../types/ObfuscatedStringsState';
@@ -30,7 +30,7 @@ export const REMOVE_GETTERS_ARGUMENTS_WRAPPERS: Visitor<ObfuscatedStringsState> 
     if (!parent.isVariableDeclarator()) return;
     const objectId = parent.get(PathKey.Id);
     if (!objectId.isIdentifier()) return;
-    const binding = findBinding(path, objectId.node.name);
+    const binding = pathUtils.findBinding(path, objectId.node.name);
     if (
       !binding?.constant ||
       !binding.referencePaths.every((p) => p.parentPath?.isMemberExpression())
